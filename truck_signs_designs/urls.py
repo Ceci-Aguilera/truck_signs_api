@@ -20,5 +20,6 @@ from backend.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', HomeView, name='home')
+    url(r'^$', HomeView, name='home'),
+    url(r'^trucks-sings/', include('backend.urls', namespace='trucks-sings-namespace')),
 ]
