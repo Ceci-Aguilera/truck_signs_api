@@ -8,3 +8,7 @@ This website is to sell truck's signs.
 - Prices Page
 - How to
 - Contact us
+
+## INSTALLED PACKAGES:
+- Django:
+  - Rest Framework: pip3 install djangorestframework
