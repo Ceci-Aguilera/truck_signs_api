@@ -12,18 +12,29 @@ from .serializers import OrderItemSerializer, TruckSerializer
 # HomePageAPI contains the list of Logos and Prices of items.
 @api_view(['GET'])
 def HomePageAPI(request):
+
     list_of_trucks = TruckItem.objects.all()
     list_of_trucks_and_product_prices_to_show = dict()
     list_of_trucks_and_product_prices_to_show['Truck'] = dict()
     list_of_trucks_and_product_prices_to_show['Prices'] = dict()
+
     for truck in list_of_trucks:
         if truck.is_single_image_for_show == True:
+
             truck_url = request.build_absolute_uri(truck.singleImage.url)
-            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname] = truck_url
+            truck_multy_url = request.build_absolute_uri(truck.multiImage.url)
+
+            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname] = {}
+
+            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname]['nickname'] = truck.nickname
+            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname]['url'] = truck_url
+            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname]['multy_url'] = truck_multy_url
+
             list_of_trucks_and_product_prices_to_show['Prices']['Truck'] = {}
             list_of_trucks_and_product_prices_to_show['Prices']['Truck']['price'] = truck.price
             list_of_trucks_and_product_prices_to_show['Prices']['Truck']['url'] = truck_url
 
+    # Prices to Show
 
     list_of_other_products = list_of_trucks = OtherProduct.objects.all()
     for product in list_of_other_products:
@@ -37,13 +48,12 @@ def HomePageAPI(request):
     return Response(list_of_trucks_and_product_prices_to_show,status=status.HTTP_201_CREATED)
 
 
-
-# class ContactUsView(TemplateView):
-#     template_name = 'contact_us.html'
-
 @api_view(['GET'])
 def HowToAPIView(request):
     return Response({}, status=status.HTTP_201_CREATED)
+
+# class ContactUsView(TemplateView):
+#     template_name = 'contact_us.html'
 
 # class HowToView(TemplateView):
 #     template_name = 'how_to.html'
@@ -54,6 +64,8 @@ def HowToAPIView(request):
 @api_view(['GET','POST'])
 def MakeOrderAPIView(request):
     if request.method == 'GET':
+        # Data send in response.data:
+        # nickname of product, type of product, url of multy image
         try:
             selected_item = TruckItem.objects.get(nickname=request.data['nickname'])
         except TruckItem.DoesNotExist:
@@ -70,5 +82,6 @@ def MakeOrderAPIView(request):
         serializer = OrderItemSerializer(data=request.data['order'])
         if serializer.is_valid():
             serializer.save()
+            # Make order and send messages
             return Response({'message': 'Order made'})
         return Response({'message': 'Error processing order'}, status=status.HTTP_201_CREATED)
