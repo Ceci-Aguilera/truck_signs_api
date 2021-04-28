@@ -6,7 +6,7 @@ import re
 
 #Truck Item to sell
 class TruckItem(models.Model):
-    nickname = models.CharField(max_length=256)
+    nickname = models.CharField(max_length=256, unique=True)
     singleImage = models.ImageField(upload_to='uploads/trucks/singleImages')
     multiImage = models.ImageField(upload_to='uploads/trucks/multiImages')
     is_single_image_for_show = models.BooleanField(default=False)

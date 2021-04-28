@@ -5,9 +5,11 @@ import json
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from .serializers import OrderItemSerializer, TruckSerializer
 
 # Create your views here.
 
+# HomePageAPI contains the list of Logos and Prices of items.
 @api_view(['GET'])
 def HomePageAPI(request):
     list_of_trucks = TruckItem.objects.all()
@@ -34,11 +36,39 @@ def HomePageAPI(request):
 
     return Response(list_of_trucks_and_product_prices_to_show,status=status.HTTP_201_CREATED)
 
-class ContactUsView(TemplateView):
-    template_name = 'contact_us.html'
 
-class HowToView(TemplateView):
-    template_name = 'how_to.html'
 
-class PricesView(TemplateView):
-    template_name = 'prices.html'
+# class ContactUsView(TemplateView):
+#     template_name = 'contact_us.html'
+
+@api_view(['GET'])
+def HowToAPIView(request):
+    return Response({}, status=status.HTTP_201_CREATED)
+
+# class HowToView(TemplateView):
+#     template_name = 'how_to.html'
+
+# class PricesView(TemplateView):
+#     template_name = 'prices.html'
+
+@api_view(['GET','POST'])
+def MakeOrderAPIView(request):
+    if request.method == 'GET':
+        try:
+            selected_item = TruckItem.objects.get(nickname=request.data['nickname'])
+        except TruckItem.DoesNotExist:
+            try:
+                selected_item = OtherProduct.objects.get(nickname=request.data['nickname'])
+            except Truck.DoesNotExist:
+                selected_item = 'NONE'
+        if selected_item != 'NONE':
+            return Response({'item_selected': 'NONE'}, status=status.HTTP_201_CREATED)
+
+        return Response({'item_selected': selected_item.nickname}, status=status.HTTP_201_CREATED)
+
+    elif request.method == 'POST':
+        serializer = OrderItemSerializer(data=request.data['order'])
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Order made'})
+        return Response({'message': 'Error processing order'}, status=status.HTTP_201_CREATED)
