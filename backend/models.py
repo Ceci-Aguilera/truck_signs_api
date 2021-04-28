@@ -4,6 +4,9 @@ import re
 
 # Create your models here.
 
+
+
+
 #Truck Item to sell
 class TruckItem(models.Model):
     nickname = models.CharField(max_length=256, unique=True)
@@ -21,7 +24,7 @@ class TruckItem(models.Model):
     def __str__(self):
         return self.nickname
 
-#Other Products Item to sell
+#Other Products Item to sell aside from trucks
 class OtherProduct(models.Model):
     nickname = models.CharField(max_length=256)
     singleImage = models.ImageField(upload_to='uploads/other_products/singleImages')
@@ -38,13 +41,24 @@ class OtherProduct(models.Model):
     def __str__(self):
         return self.nickname
 
-#Order any Item
+
+
+
+#  Skeleton of the complete order
 class OrderItem(models.Model):
     order_date_made = models.DateField(auto_now_add=True)
     total_cost = models.FloatField(default=0.0)
     user = models.CharField(max_length=256)
     slug = models.SlugField(blank=True)
     send_email_proof = models.BooleanField(default=False)
+    # shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE, null=True)
+
+    address1 = models.CharField(max_length=1024, default='Address line 1')
+    address2 = models.CharField(max_length=1024, blank=True, null=True, default='Address line 2')
+    city = models.CharField(max_length=60, default="Miami")
+    state = models.CharField(max_length=30, default="Florida")
+    zipcode = models.CharField(max_length=5, default="33165")
+    country = models.CharField(max_length=50, default='USA')
 
     order_is_complete = models.BooleanField(default=False)
 
@@ -73,6 +87,20 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.user + '-' + str(self.order_date_made)
+
+# Items to be seen by the buyer
+class ItemsToShowInCart(models.Model):
+    nickname = models.CharField(max_length=256)
+    price = models.FloatField(default=0.0)
+
+
+# Order to be seen by the buyer
+class CartToShow(models.Model):
+    user_email = models.CharField(max_length=256)
+    items = models.ManyToManyField(ItemsToShowInCart)
+    total_cost = models.FloatField(default=0.0)
+
+
 
 
 # UNIQUE SLUGIFY

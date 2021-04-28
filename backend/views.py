@@ -10,6 +10,11 @@ from .serializers import OrderItemSerializer, TruckSerializer
 # Create your views here.
 
 # HomePageAPI contains the list of Logos and Prices of items.
+#   The map list_of_trucks_and_product_prices_to_show['Truck'] has the info of
+#   the trucks logos and the map  The map list_of_trucks_and_product_prices_to_show['Prices']
+#   has the info of all generic objects prices (this second map was suppose to
+#   be in the PricesView)
+
 @api_view(['GET'])
 def HomePageAPI(request):
 
@@ -61,27 +66,23 @@ def HowToAPIView(request):
 # class PricesView(TemplateView):
 #     template_name = 'prices.html'
 
-@api_view(['GET','POST'])
+
+
+
+# MakeOrderAPIView is for complete two forms: First the Order form in which to
+# select the objects to purchase (Logo or another Item must be already selected)
+#   In Get method give Logo or Item info and in Post select especifications to
+#   make the purchase (First Form).
+#   The second Form has the info of the Shipping Address
+#   From here redirect to Confirm Order and Checkout after Post method
+
+@api_view(['POST'])
 def MakeOrderAPIView(request):
-    if request.method == 'GET':
-        # Data send in response.data:
-        # nickname of product, type of product, url of multy image
-        try:
-            selected_item = TruckItem.objects.get(nickname=request.data['nickname'])
-        except TruckItem.DoesNotExist:
-            try:
-                selected_item = OtherProduct.objects.get(nickname=request.data['nickname'])
-            except Truck.DoesNotExist:
-                selected_item = 'NONE'
-        if selected_item != 'NONE':
-            return Response({'item_selected': 'NONE'}, status=status.HTTP_201_CREATED)
+    serializer_of_order = OrderItemSerializer(data=request.data['order'])
+    if serializer_of_order.is_valid():
+        serializer_of_order.save()
+        # Go to Cart View before checkout
+        user_email = request.data['user_email']
 
-        return Response({'item_selected': selected_item.nickname}, status=status.HTTP_201_CREATED)
-
-    elif request.method == 'POST':
-        serializer = OrderItemSerializer(data=request.data['order'])
-        if serializer.is_valid():
-            serializer.save()
-            # Make order and send messages
-            return Response({'message': 'Order made'})
-        return Response({'message': 'Error processing order'}, status=status.HTTP_201_CREATED)
+        return JsonResponse({'message': 'Order made'})
+    return Response({'message': 'Error processing order'}, status=status.HTTP_201_CREATED)
