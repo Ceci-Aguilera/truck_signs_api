@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from .serializers import OrderItemSerializerTruck, OrderItemSerializerNoTruck
 import stripe
 from django.conf import settings
+from django.core.mail import send_mail
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -234,7 +235,14 @@ def OrderSummaryAPIView(request,pk):
         )
 
         if charge['captured'] == True:
+
             #Send Confirmation Email
+            subject = 'Truck Signs Purchase'
+            message = f'Hi, thank you for purchasing at Truck Signs.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = ['seampler.test@protonmail.com', ]
+            send_mail( subject, message, email_from, recipient_list )
+
             return JsonResponse({'message':'Order Done'})
 
         return JsonResponse({'message':'Error in order'})
