@@ -12,3 +12,4 @@ This website is to sell truck's signs.
 ## INSTALLED PACKAGES:
 - Django:
   - Rest Framework: pip3 install djangorestframework
+  - Stripe: pip3 isntall stripe

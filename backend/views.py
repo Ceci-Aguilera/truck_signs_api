@@ -7,6 +7,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .serializers import OrderItemSerializerTruck, OrderItemSerializerNoTruck
+import stripe
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 
@@ -204,3 +208,33 @@ def OrderSummaryAPIView(request,pk):
 
     if request.method == "GET":
         return Response(info_to_display, status=status.HTTP_201_CREATED)
+
+    elif request.method == "POST":
+        card_num = request.data['card_num']
+        exp_month = request.data['exp_month']
+        exp_year = request.data['exp_year']
+        cvc = request.data['cvc']
+
+        token = stripe.Token.create(
+          card={
+            "number": card_num,
+            "exp_month": int(exp_month),
+            "exp_year": int(exp_year),
+            "cvc": cvc
+          },
+        )
+
+        amount_to_charge = int(order.total_cost * 100)
+
+        charge = stripe.Charge.create(
+          amount=amount_to_charge,
+          currency="usd",
+          source=token,
+          description="Purchase at truck-sings.com"
+        )
+
+        if charge['captured'] == True:
+            #Send Confirmation Email
+            return JsonResponse({'message':'Order Done'})
+
+        return JsonResponse({'message':'Error in order'})
