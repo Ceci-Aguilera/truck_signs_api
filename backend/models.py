@@ -4,14 +4,11 @@ import re
 
 # Create your models here.
 
-
-
-
-#Truck Item to sell
-class TruckItem(models.Model):
+class Product(models.Model):
     nickname = models.CharField(max_length=256, unique=True)
-    singleImage = models.ImageField(upload_to='uploads/trucks/singleImages')
-    multiImage = models.ImageField(upload_to='uploads/trucks/multiImages')
+    type_of_product = models.CharField(max_length=256, default='Truck Logo')
+    singleImage = models.ImageField(upload_to='uploads/products/singleImages')
+    multiImage = models.ImageField(upload_to='uploads/products/multiImages')
     is_single_image_for_show = models.BooleanField(default=False)
     slug = models.SlugField(blank=True)
     price = models.FloatField(default=0.0)
@@ -19,28 +16,48 @@ class TruckItem(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = slugify(self.nickname)
-        super(TruckItem,self).save(*args, **kwargs)
+        super(Product,self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nickname
 
-#Other Products Item to sell aside from trucks
-class OtherProduct(models.Model):
-    nickname = models.CharField(max_length=256)
-    singleImage = models.ImageField(upload_to='uploads/other_products/singleImages')
-    multiImage = models.ImageField(upload_to='uploads/other_products/multiImages')
-    is_single_image_for_show = models.BooleanField(default=False)
-    slug = models.SlugField(blank=True)
-    price = models.FloatField(default=0.0)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = slugify(self.nickname)
-        super(OtherProduct, self).save(*args, **kwargs)
 
-    def __str__(self):
-        return self.nickname
 
+# #Truck Item to sell
+# class TruckItem(models.Model):
+#     nickname = models.CharField(max_length=256, unique=True)
+#     singleImage = models.ImageField(upload_to='uploads/trucks/singleImages')
+#     multiImage = models.ImageField(upload_to='uploads/trucks/multiImages')
+#     is_single_image_for_show = models.BooleanField(default=False)
+#     slug = models.SlugField(blank=True)
+#     price = models.FloatField(default=0.0)
+#
+#     def save(self, *args, **kwargs):
+#         if not self.id:
+#             self.slug = slugify(self.nickname)
+#         super(TruckItem,self).save(*args, **kwargs)
+#
+#     def __str__(self):
+#         return self.nickname
+#
+# #Other Products Item to sell aside from trucks
+# class OtherProduct(models.Model):
+#     nickname = models.CharField(max_length=256)
+#     singleImage = models.ImageField(upload_to='uploads/other_products/singleImages')
+#     multiImage = models.ImageField(upload_to='uploads/other_products/multiImages')
+#     is_single_image_for_show = models.BooleanField(default=False)
+#     slug = models.SlugField(blank=True)
+#     price = models.FloatField(default=0.0)
+#
+#     def save(self, *args, **kwargs):
+#         if not self.id:
+#             self.slug = slugify(self.nickname)
+#         super(OtherProduct, self).save(*args, **kwargs)
+#
+#     def __str__(self):
+#         return self.nickname
+#
 
 
 
@@ -63,7 +80,7 @@ class OrderItem(models.Model):
     order_is_complete = models.BooleanField(default=False)
 
     has_truck_item = models.BooleanField(default=False)
-    truck = models.ForeignKey(TruckItem, on_delete=models.SET_NULL, null=True)
+    truck = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
 
     truck_color = models.CharField(blank=True,max_length=256)
     company_name = models.CharField(blank=True,max_length=256)
@@ -88,16 +105,11 @@ class OrderItem(models.Model):
     def __str__(self):
         return self.user + '-' + str(self.order_date_made)
 
-# Items to be seen by the buyer
-class ItemsToShowInCart(models.Model):
-    nickname = models.CharField(max_length=256)
-    price = models.FloatField(default=0.0)
-
 
 # Order to be seen by the buyer
 class CartToShow(models.Model):
     user_email = models.CharField(max_length=256)
-    items = models.ManyToManyField(ItemsToShowInCart)
+    items = models.ManyToManyField(Product, null=True)
     total_cost = models.FloatField(default=0.0)
 
 

@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.generic.base import TemplateView
-from .models import TruckItem, OtherProduct
+from .models import OrderItem, Product
 import json
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .serializers import OrderItemSerializerTruck, OrderItemSerializerNoTruck, TruckSerializer
+from .serializers import OrderItemSerializerTruck, OrderItemSerializerNoTruck
 
 # Create your views here.
 
@@ -22,40 +22,40 @@ from .serializers import OrderItemSerializerTruck, OrderItemSerializerNoTruck, T
 @api_view(['GET'])
 def HomePageAPI(request):
 
-    list_of_trucks = TruckItem.objects.all()
+    list_of_products = Product.objects.all()
     list_of_trucks_and_product_prices_to_show = dict()
     list_of_trucks_and_product_prices_to_show['Truck'] = dict()
     list_of_trucks_and_product_prices_to_show['Prices'] = dict()
 
-    for truck in list_of_trucks:
-        if truck.is_single_image_for_show == True:
+    for productItem in list_of_products:
+        if (productItem.type_of_product == 'Truck Logo' and
+         productItem.is_single_image_for_show == True):
 
-            truck_url = request.build_absolute_uri(truck.singleImage.url)
+            truck_url = request.build_absolute_uri(productItem.singleImage.url)
 
-            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname] = {}
+            list_of_trucks_and_product_prices_to_show['Truck'][productItem.nickname] = {}
 
-            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname]['nickname'] = truck.nickname
-            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname]['url'] = truck_url
-            list_of_trucks_and_product_prices_to_show['Truck'][truck.nickname]['pk'] = truck.pk
+            list_of_trucks_and_product_prices_to_show['Truck'][productItem.nickname]['nickname'] = productItem.nickname
+            list_of_trucks_and_product_prices_to_show['Truck'][productItem.nickname]['url'] = truck_url
+            list_of_trucks_and_product_prices_to_show['Truck'][productItem.nickname]['pk'] = productItem.pk
 
             list_of_trucks_and_product_prices_to_show['Prices']['Truck'] = {}
-            list_of_trucks_and_product_prices_to_show['Prices']['Truck']['price'] = truck.price
+            list_of_trucks_and_product_prices_to_show['Prices']['Truck']['price'] = productItem.price
             list_of_trucks_and_product_prices_to_show['Prices']['Truck']['url'] = truck_url
-            list_of_trucks_and_product_prices_to_show['Prices']['Truck']['pk'] = truck.pk
+            list_of_trucks_and_product_prices_to_show['Prices']['Truck']['pk'] = productItem.pk
 
     # Prices to Show
-
-    list_of_other_products = list_of_trucks = OtherProduct.objects.all()
-    for product in list_of_other_products:
-        product_url = request.build_absolute_uri(product.singleImage.url)
-        list_of_trucks_and_product_prices_to_show['Prices'][product.nickname] = {}
-        list_of_trucks_and_product_prices_to_show['Prices'][product.nickname]['price'] = product.price
-        list_of_trucks_and_product_prices_to_show['Prices'][product.nickname]['url'] = product_url
-        list_of_trucks_and_product_prices_to_show['Prices'][product.nickname]['pk'] = product.pk
+        elif(productItem.is_single_image_for_show == True):
+            product_url = request.build_absolute_uri(productItem.singleImage.url)
+            list_of_trucks_and_product_prices_to_show['Prices'][productItem.nickname] = {}
+            list_of_trucks_and_product_prices_to_show['Prices'][productItem.nickname]['price'] = productItem.price
+            list_of_trucks_and_product_prices_to_show['Prices'][productItem.nickname]['url'] = product_url
+            list_of_trucks_and_product_prices_to_show['Prices'][productItem.nickname]['pk'] = productItem.pk
 
     template_name = 'home.html'
 
     return Response(list_of_trucks_and_product_prices_to_show,status=status.HTTP_201_CREATED)
+
 
 
 @api_view(['GET'])
@@ -92,9 +92,13 @@ def HowToAPIView(request):
 def MakeOrderTruckAPIView(request,pk):
 
     if request.method == 'GET':
-        truck = TruckItem.objects.get(pk = pk)
+        truck = Product.objects.get(pk = pk)
+
+        if truck.type_of_product != 'Truck Logo':
+            return JsonResponse({'Message':'Error no such item'})
+
         truck_multy_image_url = request.build_absolute_uri(truck.multiImage.url)
-        return JsonResponse({'Image Link':truck_multy_image_url})
+        return JsonResponse({'Message':truck_multy_image_url})
 
     if request.method == 'POST':
         serializer_of_order = OrderItemSerializerTruck(data=request.data['order'])
@@ -102,7 +106,7 @@ def MakeOrderTruckAPIView(request,pk):
             user_order = serializer_of_order.save()
 
 
-            truck = TruckItem.objects.get(pk = pk)
+            truck = Product.objects.get(pk = pk)
             user_order.total_cost += truck.price
 
             if(user_order.has_truck_number == True):
@@ -115,9 +119,10 @@ def MakeOrderTruckAPIView(request,pk):
                 user_order.total_cost += fire_extinguisher_price
 
             user_order.save()
+            order_pk = str(user_order.pk)
 
             # Go to Cart View before checkout
-            return JsonResponse({'message': 'Order made'})
+            return JsonResponse({'message': 'Order made', 'order_pk': order_pk})
 
         return Response({'message': 'Error processing order'}, status=status.HTTP_201_CREATED)
 
@@ -127,9 +132,13 @@ def MakeOrderTruckAPIView(request,pk):
 def MakeOrderOtherProductAPIView(request,pk):
 
     if request.method == 'GET':
-        product = OtherProduct.objects.get(pk = pk)
+        product = Product.objects.get(pk = pk)
+
+        if product.type_of_product == 'Truck Logo':
+            return JsonResponse({'Message':'Error no such item'})
+
         product_multy_image_url = request.build_absolute_uri(product.multiImage.url)
-        return JsonResponse({'Image Link':product_multy_image_url})
+        return JsonResponse({'Message':product_multy_image_url})
 
     if request.method == 'POST':
         serializer_of_order = OrderItemSerializerNoTruck(data=request.data['order'])
@@ -138,15 +147,60 @@ def MakeOrderOtherProductAPIView(request,pk):
 
             if(user_order.has_truck_number == True):
                 user_order.truck_number = data['truck_number']
-                number_price = OtherProduct.objects.get(nickname = 'Truck Number')
+                number_price = Product.objects.get(nickname = 'Truck Number')
                 user_order.total_cost += number_price
 
             if(user_order.has_fire_Extinguisher == True):
-                fire_extinguisher_price = OtherProduct.objects.get(nickname = 'Fire Extinguisher')
+                fire_extinguisher_price = Product.objects.get(nickname = 'Fire Extinguisher')
                 user_order.total_cost += fire_extinguisher_price
 
             user_order.save()
+            order_pk = str(user_order.pk)
 
             # Go to Cart View before checkout
-            return JsonResponse({'message': 'Order made'})
+            return JsonResponse({'message': 'Order made', 'order_pk': order_pk})
         return Response({'message': 'Error processing order'}, status=status.HTTP_201_CREATED)
+
+
+
+# Here is the Cart View before buying to review if order is OK
+#   The data displayed will be : Items with prices, total amount, user email and
+#   shipping address. After pressing checkout buttom the payment process will
+#   begin.
+
+
+@api_view(['GET','POST'])
+def OrderSummaryAPIView(request,pk):
+
+
+    order = OrderItem.objects.get(pk = pk)
+    # cart = CartToShow(user_email = order.user, total_cost = order.total_cost)
+    info_to_display = dict()
+    info_to_display['items'] = dict()
+
+    if order.has_truck_item == True:
+        truck = order.truck
+        info_to_display['items']['truck'] = str(truck.price)
+    else:
+        info_to_display['items']['truck'] = '0.0'
+
+    if order.has_truck_number == True:
+        item = Product.objects.get(nickname = 'Truck Number')
+        info_to_display['items']['truck_number'] = str(item.price)
+    else:
+        info_to_display['items']['truck_number'] = '0.0'
+
+    if order.has_fire_Extinguisher == True:
+        item = Product.objects.get(nickname = 'Fire Extinguisher')
+        info_to_display['items']['fire_extinguisher'] = str(item.price)
+    else:
+        info_to_display['items']['fire_extinguisher'] = '0.0'
+
+    info_to_display['total_cost'] = order.total_cost
+    info_to_display['user'] = order.user
+    info_to_display['address1'] = order.address1
+    info_to_display['address2'] = order.address2
+    info_to_display['address3'] = order.city+', '+order.zipcode+', '+order.state
+
+    if request.method == "GET":
+        return Response(info_to_display, status=status.HTTP_201_CREATED)
