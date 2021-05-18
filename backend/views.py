@@ -33,6 +33,7 @@ def HomePageAPI(request):
     list_of_trucks_and_product_prices_to_show['Prices'] = dict()
 
     for productItem in list_of_products:
+        print(productItem.type_of_product)
         if (productItem.type_of_product == 'Truck Logo' and
          productItem.is_single_image_for_show == True):
 
@@ -123,6 +124,10 @@ def MakeOrderTruckAPIView(request,pk):
                 fire_extinguisher_price = OtherProduct.objects.get(nickname = 'Fire Extinguisher')
                 user_order.total_cost += fire_extinguisher_price
 
+            if(user_order.has_side_only_letters == True):
+                side_only_letters_price = Product.objects.get(nickname = 'Side Only Letters')
+                user_order.total_cost += side_only_letters_price
+
             user_order.save()
             order_pk = str(user_order.pk)
 
@@ -158,6 +163,10 @@ def MakeOrderOtherProductAPIView(request,pk):
             if(user_order.has_fire_Extinguisher == True):
                 fire_extinguisher_price = Product.objects.get(nickname = 'Fire Extinguisher')
                 user_order.total_cost += fire_extinguisher_price
+
+            if(user_order.has_side_only_letters == True):
+                side_only_letters_price = Product.objects.get(nickname = 'Side Only Letters')
+                user_order.total_cost += side_only_letters_price
 
             user_order.save()
             order_pk = str(user_order.pk)
@@ -200,6 +209,12 @@ def OrderSummaryAPIView(request,pk):
         info_to_display['items']['fire_extinguisher'] = str(item.price)
     else:
         info_to_display['items']['fire_extinguisher'] = '0.0'
+
+    if order.has_side_only_letters == True:
+        item = Product.objects.get(nickname = 'Side Only Letters')
+        info_to_display['items']['side_only_letters'] = str(item.price)
+    else:
+        info_to_display['items']['side_only_letters'] = '0.0'
 
     info_to_display['total_cost'] = order.total_cost
     info_to_display['user'] = order.user

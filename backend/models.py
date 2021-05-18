@@ -94,6 +94,8 @@ class OrderItem(models.Model):
 
     has_fire_Extinguisher = models.BooleanField(default=False)
 
+    has_side_only_letters = models.BooleanField(default=False)
+
     comments = models.TextField()
 
     def save(self, *args, **kwargs):
