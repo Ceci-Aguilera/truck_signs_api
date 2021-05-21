@@ -13,8 +13,10 @@ This website is to sell truck's signs.
 ## API INFO:
 ### Urls:
 - url: http://domainName
+
     - On GET Request:
-      Returns a json file that contains an array of all trucks. The truck model that is sent to the frontend App has only two propieties:
+
+      The API returns a json file that contains an array of all trucks. The truck model that is sent to the frontend App has only two propieties:
         - 'single_image' => contains the absolute url of the truck image to be displayed.
         - 'pk' => the unique pk of each truck
 
@@ -22,9 +24,11 @@ This website is to sell truck's signs.
 
 
 
-- url: http://domainName/trucks-signs/prices
+- url: http://domainName/trucks-signs/products-price
+
   - On GET Request:
-    Returns a json file that contains an array of all products:
+
+    The API returns a json file that contains an array of all products:
       - 'name_of_type_of_product' => The type of product
       - 'single_image' => contains the absolute url of the truck image to be displayed.
       - 'pk' => the unique pk of each truck
@@ -35,7 +39,9 @@ This website is to sell truck's signs.
 - url: http://domainName/trucks-signs/create-order/pk
 
   - On Get Request:
+
     The Frontend App should provide the pk of truck to access this page and the Frontend App should also provide a form with the following parameters:
+
       - company name  (optional)
       - DOT Number  (optional)
       - Origin  (optional)
@@ -52,9 +58,43 @@ This website is to sell truck's signs.
       - zipcode
       - country
 
-      The GET method should only be called after fetching possible product colors from http://domainName/trucks-signs/retrieve-product-colors
+      The Frontend App should only call the GET method after fetching possible product colors from http://domainName/trucks-signs/retrieve-product-colors, which returns the following json file
 
-      The GET method will return a json file with a summary of the order that includes:
+      [
+        {
+
+          "id": 1,
+          "color_in_hex": "#000000",
+          "color_nickname": "Black"
+
+        },
+
+        {
+
+          .
+          .
+          .
+        }
+
+      ]
+
+    - On POST Request:
+
+      The Frontend App should submit the form as {
+
+        'order' : form,
+        'color': pk_of_color or 'None',
+
+      }
+
+      The API will return either the pk of the order or a Message of Error
+
+      After Post request redirect user to http://domainName/trucks-signs/order-summary/pk if order pk is returned
+
+
+- url: http://domainName/trucks-signs/order-summary/pk
+
+      The API on GET method will return a json file with a summary of the order that includes:
       - user email
       - address of user (two lines)
       - city
@@ -67,21 +107,27 @@ This website is to sell truck's signs.
 
 
     - On POST Request:
+
       The Fontend App should provide the following data:
+
       {
+
         'card_num':card_num,
         'exp_month':exp_month,
         'exp_year':exp_year,
         'cvc':cvc
+
       }
+
       This data is from the user credit card
       The API will return either:
+
       {'message':'Order Done'}
+
       or
+
       {'message':'Error in order'}
 
-
-- url: http://domainName/trucks-signs/create-order/pk
 
 
 ## INSTALLED PACKAGES:
@@ -90,4 +136,4 @@ This website is to sell truck's signs.
   - Stripe: pip3 install stripe
 
 ## CHANGES TO MAKE TO DEPLOY:
-- Create a default ColorModel obj before uploading any product
+- Create a default ColorModel obj and a PoductType Model before uploading any product
