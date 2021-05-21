@@ -60,7 +60,7 @@ This website is to sell truck's signs.
 
       The Frontend App should only call the GET method after fetching possible product colors from http://domainName/trucks-signs/retrieve-product-colors, which returns the following json file
 
-      [
+
         {
 
           "id": 1,
@@ -75,8 +75,6 @@ This website is to sell truck's signs.
           .
           .
         }
-
-      ]
 
     - On POST Request:
 
