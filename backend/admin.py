@@ -1,7 +1,9 @@
 from django.contrib import admin
-from .models import TruckItem, OtherProduct
+from .models import Order, Product, ProductColor, ProductType
 
 # Register your models here.
 
-admin.site.register(TruckItem)
-admin.site.register(OtherProduct)
+admin.site.register(Order)
+admin.site.register(Product)
+admin.site.register(ProductColor)
+admin.site.register(ProductType)
