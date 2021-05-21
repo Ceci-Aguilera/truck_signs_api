@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import OrderItem, Product
+from .models import Order, Product, ProductColor, ProductType
 
 # Register your models here.
 
-admin.site.register(OrderItem)
+admin.site.register(Order)
 admin.site.register(Product)
-# admin.site.register(ShippingAddress)
+admin.site.register(ProductColor)
+admin.site.register(ProductType)
