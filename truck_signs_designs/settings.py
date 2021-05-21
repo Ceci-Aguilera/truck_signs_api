@@ -21,12 +21,11 @@ TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y5ue3=gul)tp^&6@7p4wnro9n*wtzp9(^%8r482qbr^vnmg1(p'
 SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -126,12 +125,12 @@ STATICFILES_DIR = [os.path.join(BASE_DIR,'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STRIPE_PUBLISHABLE_KEY='pk_test_51IlPliANLx2yk47BwGQvZWhQ0XgDP3pkhiSUIhQXFzj7CPqViiulOSKC2GKAYLF1gVBiggpeAO2EkckHEGK07cHI00voESgDXo'
-STRIPE_SECRET_KEY='sk_test_51IlPliANLx2yk47BicN6oiw6sVOIQaPxnTFTxEkq5nkUNy7calUIwDisbSor9HD3X8io5H35yAQEozIKiCsfwTYF00Wqwm26Io'
+STRIPE_PUBLISHABLE_KEY=os.environ['STRIPE_PUBLISHABLE_KEY']
+STRIPE_SECRET_KEY=os.environ['STRIPE_SECRET_KEY']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "seamplertest@gmail.com"
-EMAIL_HOST_PASSWORD = "Superseampler!"
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
