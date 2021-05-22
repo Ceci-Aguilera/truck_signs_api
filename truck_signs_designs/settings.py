@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import django_heroku
+import dj-database-url
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -84,18 +85,19 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'NAME_OF_DB',
-        'USER': 'DB_USER_NAME',
-        'PASSWORD': 'DB_PASSWORD',
-        'HOST': 'localhost',
-        'PORT': 'PORT_NUMBER',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'NAME_OF_DB',
+#         'USER': 'DB_USER_NAME',
+#         'PASSWORD': 'DB_PASSWORD',
+#         'HOST': 'localhost',
+#         'PORT': 'PORT_NUMBER',
+#     }
+# }
 
-
+db_from_env = dj_database_url.config()
+DATABASES["default"].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

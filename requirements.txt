@@ -34,3 +34,4 @@ wheel==0.35.1
 django-heroku
 gunicorn
 whitenoise==5.2.0
+dj-database-url
