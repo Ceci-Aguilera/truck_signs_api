@@ -27,7 +27,7 @@ SECRET_KEY='y5ue3=gul)tp^&6@7p4wnro9n*wtzp9(^%8r482qbr^vnmg1(p'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'stormy-fjord-83267.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'nameless-basin-84469.herokuapp.com']
 
 
 # Application definition
@@ -77,23 +77,23 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'NAME_OF_DB',
-#         'USER': 'DB_USER_NAME',
-#         'PASSWORD': 'DB_PASSWORD',
-#         'HOST': 'localhost',
-#         'PORT': 'PORT_NUMBER',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'NAME_OF_DB',
+        'USER': 'DB_USER_NAME',
+        'PASSWORD': 'DB_PASSWORD',
+        'HOST': 'localhost',
+        'PORT': 'PORT_NUMBER',
+    }
+}
 
 
 
