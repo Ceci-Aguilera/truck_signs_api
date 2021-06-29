@@ -35,3 +35,4 @@ django-heroku
 gunicorn
 whitenoise==5.2.0
 dj-database-url
+django-environ==0.4.5

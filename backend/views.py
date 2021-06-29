@@ -70,7 +70,7 @@ def CreateOrderAPI(request, pk):
         serializer_of_order = OrderSerializer(data=request.data['order'])
         if serializer_of_order.is_valid():
             order = serializer_of_order.save()
-            if(data['color'] != 'None'):
+            if(request.data['color'] != 'None'):
                 order.product_color = ProductColor.objects.get(pk=request.data['color'])
             order.product = Product.objects.get(pk=pk)
             order.type_of_product = product.type_of_product.name_of_type_of_product
