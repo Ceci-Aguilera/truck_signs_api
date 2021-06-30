@@ -38,6 +38,17 @@ class ProductView(ListAPIView):
     model = Product
     queryset = Product.objects.all()
 
+class ProductFromCategoryView(ListAPIView):
+    authentication_classes = []
+    serializer_class = ProductSerializer
+    model = Product
+    lookup_url_kwarg = 'id'
+
+    def get_queryset(self):
+        category_id = self.kwargs.get(self.lookup_url_kwarg)
+        return Product.objects.filter(category__id=category_id)
+
+
 class ProductColorView(ListAPIView):
     authentication_classes = []
     serializer_class = ProductColorSerializer
