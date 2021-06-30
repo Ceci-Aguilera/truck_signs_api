@@ -11,17 +11,79 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.views import APIView
 
+from .models import *
+from .serializers import *
+
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 
+class CategoryListView(ListAPIView):
+    authentication_classes = []
+    serializer_class = CategorySerializer
+    model = Category
+    queryset = Category.objects.all()
 
-# @csrf_exempt
-# class CategoryListView(ListAPIView):
+class LetteringItemCategoryView(ListAPIView):
+    authentication_classes = []
+    serializer_class = LetteringItemCategorySerializer
+    model = LetteringItemCategory
+    queryset = LetteringItemCategory.objects.all()
+
+class ProductView(ListAPIView):
+    authentication_classes = []
+    serializer_class = ProductSerializer
+    model = Product
+    queryset = Product.objects.all()
+
+class ProductColorView(ListAPIView):
+    authentication_classes = []
+    serializer_class = ProductColorSerializer
+    model = ProductColor
+    queryset = ProductColor.objects.all()
 
 
+# Creates the Product Variation and the Lettering Item Variation
+class CreateProductVariationView(GenericAPIView):
+
+    authentication_classes = []
+    serializer_class = ProductVariationSerializer
+
+    def post(self, request, format=None):
+        data = request.data
+
+        try:
+            product_id = data['product_id']
+            product = Product.objects.get(id=product_id)
+            product_variation = ProductVariation(product=product)
+            product_variation.save()
+
+            try:
+                lettering_items = data['lettering_items']
+                for item in lettering_items:
+                    item_serializer = LetteringItemVariationSerializer(data=item)
+                    item_serializer.is_valid(raise_exception=True)
+                    item_category = LetteringItemCategory.objects.get(id=item_category_id)
+                    lettering_item = item_serializer.save(product_variation = product_variation, lettering_item_category=item_category)
+
+            except:
+                pass
+
+            try:
+                product_color_id = data['product_color_id']
+                product_color = ProductColor.objects.get(id=product_color_id)
+                product_variation.product_color = product_color
+
+            except:
+                pass
+            product_variation.save()
+            product_variation_serializer = ProductVariationSerializer(product_variation)
+            return Response({"Result": product_variation_serializer.data}, status=status.HTTP_200_OK)
+
+        except:
+            return Response({"Result": "Error"}, status=status.HTTP_400_BAD_REQUEST)
 
 # @api_view(['GET'])
 # def HomePageAPI(request):
