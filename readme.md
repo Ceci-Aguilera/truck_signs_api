@@ -20,4 +20,14 @@ Each **Category** has its own particular number of lettering lines and the price
 A **ModelsNameVariation** is **ModelName** with extra attributes, and so the **ProductVariation** model is a **Product** model with the extra attributes the customer will choose.
 
 
-### <a name="models"></a> Views
+### <a name="views"></a> Views
+
+When the user selects a Truck Logo at the home page or a product at the prices page, it is redirected to the page where the user chooses the product variations (all this only frontend).
+
+How the backend works for this:
+
+ - The views that include the word _List_ do what is canonical in this case (return the list of whatever is in the name of the view)
+
+  - The __CreateProductVariationView__ creates all components of the customer order and the, the order itself.
+
+  - The __PaymentView__ is accessed using the order's id returned in the above ^ view. It receives the card info for the payment and manages all stripe related functions.

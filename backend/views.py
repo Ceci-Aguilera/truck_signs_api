@@ -26,19 +26,19 @@ class CategoryListView(ListAPIView):
     model = Category
     queryset = Category.objects.all()
 
-class LetteringItemCategoryView(ListAPIView):
+class LetteringItemCategoryListView(ListAPIView):
     authentication_classes = []
     serializer_class = LetteringItemCategorySerializer
     model = LetteringItemCategory
     queryset = LetteringItemCategory.objects.all()
 
-class ProductView(ListAPIView):
+class ProductListView(ListAPIView):
     authentication_classes = []
     serializer_class = ProductSerializer
     model = Product
     queryset = Product.objects.all()
 
-class ProductFromCategoryView(ListAPIView):
+class ProductFromCategoryListView(ListAPIView):
     authentication_classes = []
     serializer_class = ProductSerializer
     model = Product
@@ -49,7 +49,7 @@ class ProductFromCategoryView(ListAPIView):
         return Product.objects.filter(category__id=category_id)
 
 
-class ProductColorView(ListAPIView):
+class ProductColorListView(ListAPIView):
     authentication_classes = []
     serializer_class = ProductColorSerializer
     model = ProductColor
