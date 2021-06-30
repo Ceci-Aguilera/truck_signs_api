@@ -61,7 +61,7 @@ class ProductVariation(models.Model):
 
     def get_total_price(self):
         items = self.get_all_lettering_items()
-        price = self.product.base_price()
+        price = self.product.base_price
         for item in items:
             price += item.lettering_item_category.price
         return price

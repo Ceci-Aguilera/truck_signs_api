@@ -65,6 +65,8 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
 class PaymentSerializer(serializers.ModelSerializer):
 
+    email_user = serializers.EmailField(required=True)
+
     class Meta:
         model = Payment
         fields = '__all__'
@@ -72,8 +74,9 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
 
+    user_email = serializers.EmailField(required=True)
     product = ProductVariationSerializer(read_only=True)
-    comment = serializers.CharField()
+    comment = serializers.CharField(required=False)
     payment = PaymentSerializer(read_only=True)
 
     class Meta:
