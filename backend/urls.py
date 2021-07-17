@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^product-color/$', ProductColorListView.as_view(), name='product-color-api'),
     url(r'^product-variation/create/$', CreateProductVariationView.as_view(), name='product-variation-create-api'),
     url(r'^order-payment/(?P<id>[0-9]+)/$', PaymentView.as_view(), name='order-payment-api'),
+    url(r'^comments/$', CommentsView.as_view(), name='comments-api'),
+    url(r'^comment/create/$', CommentCreateView.as_view(), name='comment-create-api'),
 ]

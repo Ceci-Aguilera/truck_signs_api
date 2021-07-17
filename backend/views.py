@@ -171,3 +171,18 @@ class PaymentView(GenericAPIView):
 
         except:
             return Response({"Result":"Error during payment"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class CommentsView(ListAPIView):
+    authentication_classes = []
+    serializer_class = CommentSerializer
+    model = Comment
+    queryset = Comment.objects.all().filter(visible=True)
+
+
+class CommentCreateView(CreateAPIView):
+    authentication_classes = []
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
