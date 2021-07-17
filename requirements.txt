@@ -14,7 +14,7 @@ djangorestframework==3.12.4
 idna==2.10
 oauthlib==3.1.0
 pip==20.2.4
-psycopg2==2.8.6
+psycopg2-binary==2.8.6
 pycosat==0.6.3
 pycparser==2.20
 PyJWT==2.0.1

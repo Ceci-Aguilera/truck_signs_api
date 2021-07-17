@@ -82,3 +82,14 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    user_email = serializers.EmailField(required=True)
+    image = serializers.ImageField(use_url=True)
+    text = serializers.CharField(required=False)
+
+    class Meta:
+        model = Comment
+        fields = '__all__'

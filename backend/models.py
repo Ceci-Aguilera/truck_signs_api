@@ -108,3 +108,13 @@ class Order(models.Model):
 
     def get_total_price(self):
         return self.product.get_total_price()
+
+
+class Comment(models.Model):
+    user_email = models.CharField(max_length=256)
+    image = models.ImageField(upload_to='uploads/comments/')
+    text = models.TextField(blank=True)
+    visible = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user_email
