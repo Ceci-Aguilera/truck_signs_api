@@ -56,6 +56,13 @@ class ProductColorListView(ListAPIView):
     queryset = ProductColor.objects.all()
 
 
+class LogoListView(ListAPIView):
+    authentication_classes = []
+    serializer_class = ProductSerializer
+    model = Product
+    queryset = Product.objects.filter(category__title='Truck Sign')
+
+
 # Creates the Product Variation and the Lettering Item Variation, then
 # creates the Order
 class CreateProductVariationView(GenericAPIView):
