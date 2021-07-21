@@ -10,6 +10,11 @@ environ.Env.read_env()
 SECRET_KEY= env("SECRET_KEY")
 DEBUG = True
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://0.0.0.0:3000"
+]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
