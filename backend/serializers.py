@@ -56,6 +56,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
         price = obj.product.base_price
         for item in items:
             price += item.lettering_item_category.price
+        price = price * obj.amount
         return price
 
     class Meta:
