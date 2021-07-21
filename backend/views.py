@@ -63,6 +63,15 @@ class LogoListView(ListAPIView):
     queryset = Product.objects.filter(category__title='Truck Sign')
 
 
+class ProductDetail(RetrieveAPIView):
+    authentication_classes = []
+    serializer_class = ProductSerializer
+    model = Product
+    lookup_field = 'id'
+    queryset = Product.objects.all()
+
+
+
 # Creates the Product Variation and the Lettering Item Variation, then
 # creates the Order
 class CreateProductVariationView(GenericAPIView):

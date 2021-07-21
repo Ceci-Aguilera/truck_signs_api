@@ -55,6 +55,7 @@ class ProductVariation(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     product_color = models.ForeignKey(ProductColor, on_delete=models.SET_NULL, null=True, blank=True)
+    amount = models.IntegerField(default=1)
 
     def get_all_lettering_items(self):
         return self.lettering_item_variation_set.all()
@@ -64,6 +65,7 @@ class ProductVariation(models.Model):
         price = self.product.base_price
         for item in items:
             price += item.lettering_item_category.price
+        price = price * self.amount
         return price
 
     def __str__(self):
