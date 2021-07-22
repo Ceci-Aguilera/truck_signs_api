@@ -13,7 +13,7 @@ class Category(models.Model):
     image = models.ImageField(upload_to='uploads/categories/')
     base_price = models.FloatField(default=0.0)
     # -1 means any possitive amount
-    max_amount_of_lettering_items = models.FloatField(default=-1)
+    max_amount_of_lettering_items = models.IntegerField(default=-1)
 
     class Meta:
         verbose_name_plural = 'categories'
