@@ -11,6 +11,9 @@ COLOR_VALIDATOR = RegexValidator(r'^#(?:[0-9a-fA-F]{3}){1,2}$', 'only valid hex 
 class Category(models.Model):
     title = models.CharField(max_length=256)
     image = models.ImageField(upload_to='uploads/categories/')
+    base_price = models.FloatField(default=0.0)
+    # -1 means any possitive amount
+    max_amount_of_lettering_items = models.FloatField(default=-1)
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -33,11 +36,9 @@ class LetteringItemCategory(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
-    base_price = models.FloatField(default=0.0)
-    # -1 means any possitive amount
-    max_amount_of_lettering_items = models.FloatField(default=-1)
     image = models.ImageField(upload_to='uploads/products/')
     only_on_default_color = models.BooleanField(default=True)
+    is_uploaded = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title + " - " + self.category.title
