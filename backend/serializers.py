@@ -90,7 +90,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     user_email = serializers.EmailField(required=True)
     product = ProductVariationSerializer(read_only=True)
-    comment = serializers.CharField(required=False)
+    comment = serializers.CharField(required=False, allow_blank=True)
     payment = PaymentSerializer(read_only=True)
 
     class Meta:
