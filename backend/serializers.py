@@ -29,7 +29,7 @@ class LetteringItemVariationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LetteringItemVariation
-        fields = ('lettering_item_category', 'lettering')
+        fields = ('lettering_item_category', 'lettering', 'id')
 
 
 
