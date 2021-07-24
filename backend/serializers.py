@@ -5,10 +5,15 @@ from .models import *
 class CategorySerializer(serializers.ModelSerializer):
 
     image = serializers.ImageField(use_url=True)
+    sample_product_id = serializers.SerializerMethodField('get_sample_product_id')
+
+    def get_sample_product_id(self, obj):
+        product = Product.objects.filter(category=obj).first()
+        return product.id
 
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('title', 'image', 'base_price', 'max_amount_of_lettering_items', 'height', 'width', 'sample_product_id')
 
 
 class LetteringItemCategorySerializer(serializers.ModelSerializer):
@@ -27,14 +32,6 @@ class LetteringItemVariationSerializer(serializers.ModelSerializer):
         fields = ('lettering_item_category', 'lettering')
 
 
-class ProductSerializer(serializers.ModelSerializer):
-
-    category = CategorySerializer(read_only=True)
-    image = serializers.ImageField(use_url=True)
-
-    class Meta:
-        model = Product
-        fields = '__all__'
 
 
 class ProductColorSerializer(serializers.ModelSerializer):
@@ -42,6 +39,22 @@ class ProductColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductColor
         fields = '__all__'
+
+
+
+
+class ProductSerializer(serializers.ModelSerializer):
+
+    category = CategorySerializer(read_only=True)
+    image = serializers.ImageField(use_url=True)
+    detail_image = serializers.ImageField(use_url=True)
+    product_color_default = ProductColorSerializer(read_only=True)
+
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
 
 
 class ProductVariationSerializer(serializers.ModelSerializer):
@@ -53,7 +66,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
     def get_total_price(self, obj):
         items = obj.get_all_lettering_items()
-        price = obj.product.base_price
+        price = obj.product.category.base_price
         for item in items:
             price += item.lettering_item_category.price
         price = price * obj.amount

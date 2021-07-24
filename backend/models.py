@@ -14,6 +14,8 @@ class Category(models.Model):
     base_price = models.FloatField(default=0.0)
     # -1 means any possitive amount
     max_amount_of_lettering_items = models.IntegerField(default=-1)
+    height = models.FloatField(default=0.0)
+    width = models.FloatField(default=0.0)
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -33,16 +35,6 @@ class LetteringItemCategory(models.Model):
     def __str__(self):
         return self.title
 
-class Product(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=256)
-    image = models.ImageField(upload_to='uploads/products/')
-    only_on_default_color = models.BooleanField(default=True)
-    is_uploaded = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.title + " - " + self.category.title
-
 
 class ProductColor(models.Model):
     color_in_hex = models.CharField(max_length=256, validators=[COLOR_VALIDATOR], default='#000000')
@@ -50,6 +42,20 @@ class ProductColor(models.Model):
 
     def __str__(self):
         return self.color_nickname
+
+
+class Product(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256)
+    image = models.ImageField(upload_to='uploads/products/', blank=True)
+    detail_image = models.ImageField(upload_to='uploads/products_detail', blank=True)
+    product_color_default = models.ForeignKey(ProductColor, on_delete=models.SET_NULL, null=True)
+    only_on_default_color = models.BooleanField(default=True)
+    is_uploaded = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title + " - " + self.category.title
+
 
 
 class ProductVariation(models.Model):
@@ -73,9 +79,9 @@ class ProductVariation(models.Model):
         return self.product.title + " - " + str(self.id)
 
 class LetteringItemVariation(models.Model):
-    lettering_item_category = models.ForeignKey(LetteringItemCategory, on_delete=models.CASCADE)
+    lettering_item_category = models.ForeignKey(LetteringItemCategory, on_delete=models.SET_NULL, null=True, blank=True)
     lettering = models.CharField(max_length=256)
-    product_variation = models.ForeignKey(ProductVariation, on_delete=models.CASCADE,related_name="lettering_item_variation_set")
+    product_variation = models.ForeignKey(ProductVariation, on_delete=models.SET_NULL, null=True, blank=True,related_name="lettering_item_variation_set")
 
     def __str__(self):
         return self.lettering_item_category.title + " - " + self.lettering
