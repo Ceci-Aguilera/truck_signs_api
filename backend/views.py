@@ -8,7 +8,7 @@ import json
 
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
+from rest_framework.generics import *
 from rest_framework.views import APIView
 
 from .models import *
@@ -77,10 +77,13 @@ class ProductLetteringCreate(APIView):
 
     def post(self, request, format=None):
         data = request.data
-        print(data['lettering_item_category_id'])
         product = Product.objects.get(id = data['product_id'])
         try:
             product_variation = ProductVariation.objects.get(id = data['product_variation_id'])
+            if(product.id != product_variation.product.id):
+                product_variation = ProductVariation(product=product, product_color=product.product_color_default, amount=1)
+                product_variation.save()
+
         except:
             product_variation = ProductVariation(product=product, product_color=product.product_color_default, amount=1)
             product_variation.save()
@@ -96,6 +99,21 @@ class ProductLetteringCreate(APIView):
         product_variation_serializer = ProductVariationSerializer(product_variation)
 
         return Response({"Result": product_variation_serializer.data}, status=status.HTTP_200_OK)
+
+
+class LetteringVariationDestroyAPIView(DestroyAPIView):
+    serializer_class = LetteringItemVariationSerializer
+    queryset = LetteringItemVariation.objects.all()
+    lookup_field = 'id'
+
+    def delete(self, request, *args, **kwargs):
+        product_id = request.data.get('id')
+        response = super().delete(request, *args, **kwargs)
+        if response.status_code == 204:
+            from django.core.cache import cache
+            cache.delete(f'product_data_{product_id}')
+        return response
+
 
 class ProductVariationRetrieveView(RetrieveAPIView):
     authentication_classes = []
@@ -150,6 +168,8 @@ class CreateProductVariationView(GenericAPIView):
 
         except:
             return Response({"Result": "Error"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 

@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^lettering-item-categories/$', LetteringItemCategoryListView.as_view(), name='lettering-item-categories-api'),
     url(r'^products/$', ProductListView.as_view(), name='products-api'),
     url(r'^product-lettering/create/$', ProductLetteringCreate.as_view(), name='product-lettering-create-api'),
+    url(r'^product-lettering/(?P<id>[0-9]+)/delete/$', LetteringVariationDestroyAPIView.as_view(), name='lettering-variation-delete-api'),
     url(r'^product-category/(?P<id>[0-9]+)/$', ProductFromCategoryListView.as_view(), name='product-category-api'),
     url(r'^product-variation-retrieve/(?P<id>[0-9]+)/$', ProductVariationRetrieveView.as_view(), name='product-category-api'),
     url(r'^product-color/$', ProductColorListView.as_view(), name='product-color-api'),
