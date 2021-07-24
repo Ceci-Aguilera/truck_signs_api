@@ -92,7 +92,7 @@ class Payment(models.Model):
     user_email = models.CharField(max_length=256)
     stripe_charge_id = models.CharField(max_length=50)
     amount = models.FloatField(default=0.0)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.user_email + " - " + self.timestamp
@@ -100,10 +100,10 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    ordered_date = models.DateField(auto_now_add=True)
+    ordered_date = models.DateTimeField(auto_now_add=True, blank=True,null=True)
     user_email = models.CharField(max_length=256)
-    user_first_name = models.CharField(max_length=256)
-    user_last_name = models.CharField(max_length=256)
+    user_first_name = models.CharField(max_length=256, blank=True)
+    user_last_name = models.CharField(max_length=256, blank=True)
     # send_email_proof = models.BooleanField(default=False)
     address1 = models.CharField(max_length=1024, default='Address line 1')
     address2 = models.CharField(max_length=1024, blank=True, null=True, default='Address line 2')

@@ -3,8 +3,10 @@ from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 import json
+from datetime import datetime
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -169,6 +171,39 @@ class CreateProductVariationView(GenericAPIView):
         except:
             return Response({"Result": "Error"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class CreateOrder(GenericAPIView):
+    authentication_classes = []
+    serializer_class = OrderSerializer
+
+    def post(self, request, id, format=None):
+        data = request.data
+        product_variation = ProductVariation.objects.get(id = id)
+
+        product_color = ProductColor.objects.get(id=data['product_color_id'])
+        amount = data['amount']
+        product_variation.product_color = product_color
+        product_variation.amount = amount
+        product_variation.save()
+
+        # order = Order.objects.create(product=product_variation, payment=None)
+
+        order_serializer = OrderSerializer(data=data['order'])
+        order_serializer.is_valid(raise_exception=True)
+        order = order_serializer.save(product=product_variation, payment=None)
+        order_serializer = OrderSerializer(order)
+
+        return Response({"Result":order_serializer.data}, status=status.HTTP_200_OK)
+
+
+
+
+class RetrieveOrder(RetrieveAPIView):
+    authentication_classes = []
+    serializer_class = OrderSerializer
+    model = Order
+    lookup_field = 'id'
+    queryset = Order.objects.all()
 
 
 
