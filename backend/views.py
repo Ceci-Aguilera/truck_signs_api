@@ -71,6 +71,39 @@ class ProductDetail(RetrieveAPIView):
     queryset = Product.objects.all()
 
 
+class ProductLetteringCreate(APIView):
+    authentication_classes = []
+    serializer_class = LetteringItemVariationSerializer
+
+    def post(self, request, format=None):
+        data = request.data
+        print(data['lettering_item_category_id'])
+        product = Product.objects.get(id = data['product_id'])
+        try:
+            product_variation = ProductVariation.objects.get(id = data['product_variation_id'])
+        except:
+            product_variation = ProductVariation(product=product, product_color=product.product_color_default, amount=1)
+            product_variation.save()
+
+        lettering_item_serializer = LetteringItemVariationSerializer(data=data['product_variation_lettering'])
+        lettering_item_serializer.is_valid(raise_exception=True)
+        lettering_item = lettering_item_serializer.save()
+        lettering_item_category = LetteringItemCategory.objects.get(id = data['lettering_item_category_id'])
+        lettering_item.lettering_item_category = lettering_item_category
+        lettering_item.product_variation = product_variation
+        lettering_item.save()
+
+        product_variation_serializer = ProductVariationSerializer(product_variation)
+
+        return Response({"Result": product_variation_serializer.data}, status=status.HTTP_200_OK)
+
+class ProductVariationRetrieveView(RetrieveAPIView):
+    authentication_classes = []
+    serializer_class = ProductVariationSerializer
+    model = ProductVariation
+    lookup_field = 'id'
+    queryset = ProductVariation.objects.all()
+
 
 # Creates the Product Variation and the Lettering Item Variation, then
 # creates the Order
