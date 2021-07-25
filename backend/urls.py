@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^order-payment/(?P<id>[0-9]+)/$', PaymentView.as_view(), name='order-payment-api'),
     url(r'^comments/$', CommentsView.as_view(), name='comments-api'),
     url(r'^comment/create/$', CommentCreateView.as_view(), name='comment-create-api'),
+    url(r'^upload-customer-image/$', UploadCustomerImage.as_view(), name='upload-customer-image-api'),
 ]
