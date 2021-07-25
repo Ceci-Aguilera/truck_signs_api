@@ -65,7 +65,7 @@ class LogoListView(ListAPIView):
     authentication_classes = []
     serializer_class = ProductSerializer
     model = Product
-    queryset = Product.objects.filter(category__title='Truck Sign')
+    queryset = Product.objects.filter(category__title='Truck Sign', is_uploaded=False)
 
 
 class ProductDetail(RetrieveAPIView):
@@ -183,7 +183,10 @@ class CreateOrder(GenericAPIView):
         data = request.data
         product_variation = ProductVariation.objects.get(id = id)
 
-        product_color = ProductColor.objects.get(id=data['product_color_id'])
+        try:
+            product_color = ProductColor.objects.get(id=data['product_color_id'])
+        except:
+            product_color = None
         amount = data['amount']
         product_variation.product_color = product_color
         product_variation.amount = amount
@@ -309,3 +312,22 @@ class CommentCreateView(CreateAPIView):
     authentication_classes = []
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
+
+
+class UploadCustomerImage(GenericAPIView):
+    authentication_classes = []
+
+    def post(self, request, form=None):
+        data = request.data
+        product_title = "Customer-Image-" + str(datetime.now())
+        category = Category.objects.get(title="Truck Sign")
+        product = Product(category=category, title=product_title, is_uploaded=True, product_color_default=None)
+        product.save()
+
+        product_serializer = ProductSerializer(product, data=data, partial=True)
+        product_serializer.is_valid(raise_exception=True)
+        product = product_serializer.save()
+        product.detail_image = product.image
+        product.save()
+        product_serializer = ProductSerializer(product)
+        return Response({"Result": product_serializer.data}, status=status.HTTP_200_OK)
