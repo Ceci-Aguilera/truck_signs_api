@@ -4,6 +4,9 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 
 import json
 from datetime import datetime
@@ -255,9 +258,22 @@ class PaymentView(GenericAPIView):
             order.ordered = True
             order.payment = payment
             order.save()
-            return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
             # Send Email to user
+            email_subject="Purchase made."
+            message=render_to_string('purchase-made.html', {
+                'user': order.user_email,
+                'image': order.product.product.image,
+                'total_amount':order.get_total_price(),
+            })
+            to_email = order.user_email
+            email = EmailMultiAlternatives(email_subject, to=[to_email])
+            email.attach_alternative(message, "text/html")
+            email.send()
+
+            return Response({"Result": "Success"}, status=status.HTTP_200_OK)
+
+
         except stripe.error.CardError as e:
             return Response({"Result":"Error with card during payment"}, status=status.HTTP_400_BAD_REQUEST)
 
