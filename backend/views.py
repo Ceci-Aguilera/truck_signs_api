@@ -186,8 +186,6 @@ class CreateOrder(GenericAPIView):
         product_variation.amount = amount
         product_variation.save()
 
-        # order = Order.objects.create(product=product_variation, payment=None)
-
         order_serializer = OrderSerializer(data=data['order'])
         order_serializer.is_valid(raise_exception=True)
         order = order_serializer.save(product=product_variation, payment=None)
@@ -222,6 +220,12 @@ class PaymentView(GenericAPIView):
 
         try:
             order = Order.objects.get(id=id)
+            try:
+                order_serializer = OrderSerializer(order, data=request.data['order'], partial=True)
+                order_serializer.is_valid(raise_exception=True)
+                order = order_serializer.save()
+            except:
+                pass
 
             card_num = request.data['card_num']
             exp_month = request.data['exp_month']
@@ -254,7 +258,6 @@ class PaymentView(GenericAPIView):
             return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
             # Send Email to user
-
         except stripe.error.CardError as e:
             return Response({"Result":"Error with card during payment"}, status=status.HTTP_400_BAD_REQUEST)
 

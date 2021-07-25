@@ -69,7 +69,7 @@ class ProductVariation(models.Model):
 
     def get_total_price(self):
         items = self.get_all_lettering_items()
-        price = self.product.base_price
+        price = self.product.category.base_price
         for item in items:
             price += item.lettering_item_category.price
         price = price * self.amount
@@ -95,7 +95,7 @@ class Payment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
-        return self.user_email + " - " + self.timestamp
+        return self.user_email + " - " + str(self.timestamp)
 
 
 
