@@ -76,7 +76,10 @@ class ProductVariation(models.Model):
         return price
 
     def __str__(self):
-        return self.product.title + " - " + str(self.id)
+        try:
+            return self.product.title + " - " + str(self.id)
+        except:
+            return "Cancelled product"
 
 class LetteringItemVariation(models.Model):
     lettering_item_category = models.ForeignKey(LetteringItemCategory, on_delete=models.SET_NULL, null=True, blank=True)
@@ -85,7 +88,6 @@ class LetteringItemVariation(models.Model):
 
     def __str__(self):
         return self.lettering_item_category.title + " - " + self.lettering
-
 
 
 class Payment(models.Model):
