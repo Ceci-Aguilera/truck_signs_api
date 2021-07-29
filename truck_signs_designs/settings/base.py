@@ -30,7 +30,6 @@ ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'nameless-basin-84469.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -38,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'cloudinary',
     'backend',
+    'django.contrib.admin',
 ]
 
 MIDDLEWARE = [

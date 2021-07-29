@@ -15,6 +15,21 @@ CORS_ALLOWED_ORIGINS = [
     "http://0.0.0.0:3000"
 ]
 
+# cloudinary.config(
+#   cloud_name = env('CLOUD_NAME'),
+#   api_key = env('CLOUD_API_KEY'),
+#   api_secret = env('CLOUD_API_SECRET'),
+#   secure = True
+# )
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('CLOUD_API_KEY'),
+    'API_SECRET': env('CLOUD_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

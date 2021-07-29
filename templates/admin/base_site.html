@@ -1,0 +1,122 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}{{ block.super }}{% endblock %}
+
+{% block branding %}
+<style>
+
+/* LOGIN */
+.button, input[type="submit"], input[type="button"], .submit-row{
+}
+.submit-row input, a.button{
+  background-color: #bf1e2d !important;
+  font-size:16px;
+}
+
+
+/* DASHBOARD */
+  #header{
+    background:white !important;
+    border-bottom: 1px solid #bf1e2d !important;
+    height: 50px !important;
+  }
+
+  .truck-signs-header{
+    color:#bf1e2d !important;
+    font-size: 30px;
+  }
+
+  #user-tools{
+    color:black !important;
+    font-size:16px;
+  }
+
+  #user-tools a{
+    color:#bf1e2d !important;
+  }
+
+  #user-tools a:hover{
+    border-bottom: 1px solid #bf1e2d;
+  }
+
+  #content{
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+  .app-auth table caption{
+    background: white !important;
+    color: #000 !important;
+    font-size:20px !important;
+    border: none !important;
+    font-weight: 300 !important;
+  }
+
+  .app-auth table tbody tr th a{
+    color: #bf1e2d !important;
+    font-size:16px;
+    font-weight: 300 !important;
+  }
+
+  .app-auth table tbody tr td a{
+    color: #bf1e2d !important;
+    font-size:16px;
+    font-weight: 300 !important;
+  }
+
+  .app-auth table tbody tr td a.section:link, a.section:visited{
+    color:black !important;
+  }
+
+  .app-auth table caption a.section:link, a.section:visited{
+    color:black !important;
+  }
+
+  .app-backend table caption{
+    background: white !important;
+    color: #000 !important;
+    font-size:20px !important;
+    border: none !important;
+    font-weight: 300 !important;
+  }
+
+  .app-backend table tbody tr th a{
+    color: #b03737 !important;
+    font-size:16px;
+    font-weight: 300 !important;
+  }
+
+  .app-backend table tbody tr td a{
+    color: #b03737 !important;
+    font-size:16px;
+    font-weight: 300 !important;
+  }
+
+    .app-backend table tbody tr td a.section:link, a.section:visited{
+      color:black !important;
+    }
+
+    .app-backend table caption a.section:link, a.section:visited{
+      color:black !important;
+    }
+
+  /* Extras */
+  .breadcrumbs{
+    background-color: #bf1e2d !important;
+  }
+
+  #changelist .actions .button{
+    background-color: white !important;
+    color: black !important;
+    font-weight: 300 !important;
+    border: 1px solid #bf1e2d !important;
+    box-shadow: 0 0 0 0 #fff !important;
+  }
+</style>
+
+<h1 id="site-name"><a  class='truck-signs-header' href="{% url 'admin:index' %}">Truck Signs</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
