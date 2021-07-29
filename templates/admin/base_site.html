@@ -7,6 +7,10 @@
 {% block branding %}
 <style>
 
+  body{
+    font-weight: 300 !important;
+  }
+
 /* LOGIN */
 .button, input[type="submit"], input[type="button"], .submit-row{
 }
@@ -114,6 +118,28 @@
     border: 1px solid #bf1e2d !important;
     box-shadow: 0 0 0 0 #fff !important;
   }
+
+  #changelist .actions select{
+    border: 1px solid #bf1e2d !important;
+  }
+
+  #changelist .actions label{
+    color: black !important;
+    font-size:16px;
+    font-weight: 300 !important;
+  }
+
+  #changelist table thead th .text span{
+    font-size:16px;
+    font-weight: 300 !important;
+  }
+
+  .form-row div .file-upload a{
+    color: #bf1e2d !important;
+    font-size:16px;
+    font-weight: 300 !important;
+  }
+
 </style>
 
 <h1 id="site-name"><a  class='truck-signs-header' href="{% url 'admin:index' %}">Truck Signs</a></h1>
