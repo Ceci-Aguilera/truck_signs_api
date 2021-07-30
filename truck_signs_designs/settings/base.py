@@ -24,7 +24,7 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 
 
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'nameless-basin-84469.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'guarded-taiga.herokuapp.com']
 
 
 # Application definition
@@ -134,8 +134,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIR = [os.path.join(ROOT_BASE_DIR,'static')]
-STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'static')
+STATICFILES_DIR = [os.path.join(ROOT_BASE_DIR,'staticfiles')]
+STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
