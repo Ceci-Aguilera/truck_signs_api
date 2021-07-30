@@ -254,7 +254,7 @@ class PaymentView(GenericAPIView):
                 currency="usd",
                 source=token
             )
-            
+
 
             stripe_charge_id = charge['id']
             payment = Payment(user_email = order.user_email, stripe_charge_id=stripe_charge_id, amount=amount)
@@ -268,6 +268,7 @@ class PaymentView(GenericAPIView):
             message=render_to_string('purchase-made.html', {
                 'user': order.user_email,
                 'image': order.product.product.image,
+                'amount_of_product': str(order.product.amount),
                 'total_amount':str("{:.2f}".format(order.get_total_price())),
             })
             to_email = order.user_email
