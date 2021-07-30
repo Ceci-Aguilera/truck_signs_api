@@ -16,7 +16,7 @@ SECRET_KEY= os.environ["SECRET_KEY"]
 DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://0.0.0.0:3000"
+    "https://truck-signs-frontend-nextjs-4f1tbf3c3-ceci-aguilera.vercel.app",
 ]
 
 CLOUDINARY_STORAGE = {
