@@ -264,17 +264,17 @@ class PaymentView(GenericAPIView):
             order.save()
 
             # Send Email to user
-            email_subject="Purchase made."
-            message=render_to_string('purchase-made.html', {
-                'user': order.user_email,
-                'image': order.product.product.image,
-                'amount_of_product': str(order.product.amount),
-                'total_amount':str("{:.2f}".format(order.get_total_price())),
-            })
-            to_email = order.user_email
-            email = EmailMultiAlternatives(email_subject, to=[to_email])
-            email.attach_alternative(message, "text/html")
-            email.send()
+            # email_subject="Purchase made."
+            # message=render_to_string('purchase-made.html', {
+            #     'user': order.user_email,
+            #     'image': order.product.product.image,
+            #     'amount_of_product': str(order.product.amount),
+            #     'total_amount':str("{:.2f}".format(order.get_total_price())),
+            # })
+            # to_email = order.user_email
+            # email = EmailMultiAlternatives(email_subject, to=[to_email])
+            # email.attach_alternative(message, "text/html")
+            # email.send()
 
             return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
