@@ -17,6 +17,8 @@ DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
     "https://truck-signs-frontend-nextjs-4f1tbf3c3-ceci-aguilera.vercel.app",
+    "https://truck-signs-frontend-nextjs.vercel.app",
+    "https://truck-signs-frontend-nextjs-git-vercelpre-ceci-aguilera.vercel.app",
 ]
 
 CLOUDINARY_STORAGE = {
