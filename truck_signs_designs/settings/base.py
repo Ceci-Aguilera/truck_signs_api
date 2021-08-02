@@ -24,7 +24,7 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 
 
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'nameless-basin-84469.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'truck-signs-api.herokuapp.com']
 
 
 # Application definition
@@ -127,15 +127,15 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIR = [os.path.join(ROOT_BASE_DIR,'static')]
-STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'static')
+STATICFILES_DIR = [os.path.join(ROOT_BASE_DIR,'staticfiles')]
+STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
