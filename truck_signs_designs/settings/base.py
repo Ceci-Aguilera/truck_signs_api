@@ -24,7 +24,7 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 
 
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'truck-signs-api.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '192.168.56.101' ,'truck-signs-api.herokuapp.com']
 
 
 # Application definition
