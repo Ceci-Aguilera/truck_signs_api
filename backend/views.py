@@ -22,6 +22,8 @@ from .serializers import *
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+admin_email = settings.EMAIL_ADMIN
+current_admin_domain = settings.CURRENT_ADMIN_DOMAIN
 
 # Create your views here.
 
@@ -276,8 +278,18 @@ class PaymentView(GenericAPIView):
             email.attach_alternative(message, "text/html")
             email.send()
 
-            return Response({"Result": "Success"}, status=status.HTTP_200_OK)
+            admin_message=render_to_string('admin-purchase-made.html',{
+                'user': order.user_email,
+                'order': order.id,
+                'current_admin_domain':current_admin_domain,
+            })
 
+            to_admin_email = admin_email
+            email = EmailMultiAlternatives(email_subject, to=[to_admin_email])
+            email.attach_alternative(admin_message, "text/html")
+            email.send()
+
+            return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
         except stripe.error.CardError as e:
             return Response({"Result":"Error with card during payment"}, status=status.HTTP_400_BAD_REQUEST)

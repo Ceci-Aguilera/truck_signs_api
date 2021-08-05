@@ -1,0 +1,11 @@
+
+
+{% autoescape off %}
+<div style="margin-left: 20px !important; padding: 10px !important; border: 1px solid #bf1e2d !important;" >
+<h3 style="color:#bf1e2d !important; font-weight: 300 !important;">Hello Truck Sings' Admin,</h3>
+    <p style="font-weight: 300 !important;"> The customer {{user}} just made a purchase.</p>
+    <p style="font-weight: 300 !important;">The id of the order is: {{order}}</p>
+    <br />
+    <p style="font-weight: 300 !important;">For more details please go to <span style="color: #bf1e2d !important; font-weight: 300 !important"><a href={{current_admin_domain}}>THE ADMIN PANEL</a></span></p>
+    </div>
+{% endautoescape %}
