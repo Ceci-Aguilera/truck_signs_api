@@ -87,7 +87,10 @@ class LetteringItemVariation(models.Model):
     product_variation = models.ForeignKey(ProductVariation, on_delete=models.SET_NULL, null=True, blank=True,related_name="lettering_item_variation_set")
 
     def __str__(self):
-        return self.lettering_item_category.title + " - " + self.lettering
+        try:
+            return self.lettering_item_category.title + " - " + self.lettering
+        except:
+            return "---"
 
 
 class Payment(models.Model):
@@ -97,7 +100,7 @@ class Payment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
-        return self.user_email + " - " + str(self.timestamp)
+        return self.user_email + " - " + self.timestamp.strftime("%b. %-d, %Y, %-I:%M %p")
 
 
 
@@ -115,7 +118,7 @@ class Order(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return self.user_email + '-' + str(self.ordered_date)
+        return self.user_email + '-' + self.ordered_date.strftime("%b. %-d, %Y, %-I:%M %p")
 
     def get_total_price(self):
         return self.product.get_total_price()
