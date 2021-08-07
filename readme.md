@@ -19,6 +19,8 @@ Each **Category** has its own particular number of lettering lines and the price
 
 A **ModelsNameVariation** is **ModelName** with extra attributes, and so the **ProductVariation** model is a **Product** model with the extra attributes the customer will choose.
 
+The Admin should create a new Category if there is a new kind of product, a new letteringCategory if there is a new kind of data for the logo to add.
+
 
 ### <a name="views"></a> Views
 
