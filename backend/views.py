@@ -266,28 +266,28 @@ class PaymentView(GenericAPIView):
             order.save()
 
             # Send Email to user
-            email_subject="Purchase made."
-            message=render_to_string('purchase-made.html', {
-                'user': order.user_email,
-                'image': order.product.product.image,
-                'amount_of_product': str(order.product.amount),
-                'total_amount':str("{:.2f}".format(order.get_total_price())),
-            })
-            to_email = order.user_email
-            email = EmailMultiAlternatives(email_subject, to=[to_email])
-            email.attach_alternative(message, "text/html")
-            email.send()
+            # email_subject="Purchase made."
+            # message=render_to_string('purchase-made.html', {
+            #     'user': order.user_email,
+            #     'image': order.product.product.image,
+            #     'amount_of_product': str(order.product.amount),
+            #     'total_amount':str("{:.2f}".format(order.get_total_price())),
+            # })
+            # to_email = order.user_email
+            # email = EmailMultiAlternatives(email_subject, to=[to_email])
+            # email.attach_alternative(message, "text/html")
+            # email.send()
+            #
+            # admin_message=render_to_string('admin-purchase-made.html',{
+            #     'user': order.user_email,
+            #     'order': order.id,
+            #     'current_admin_domain':current_admin_domain,
+            # })
 
-            admin_message=render_to_string('admin-purchase-made.html',{
-                'user': order.user_email,
-                'order': order.id,
-                'current_admin_domain':current_admin_domain,
-            })
-
-            to_admin_email = admin_email
-            email = EmailMultiAlternatives(email_subject, to=[to_admin_email])
-            email.attach_alternative(admin_message, "text/html")
-            email.send()
+            # to_admin_email = admin_email
+            # email = EmailMultiAlternatives(email_subject, to=[to_admin_email])
+            # email.attach_alternative(admin_message, "text/html")
+            # email.send()
 
             return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
