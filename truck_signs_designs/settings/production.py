@@ -43,6 +43,10 @@ DATABASES = {
 STRIPE_PUBLISHABLE_KEY=os.environ["STRIPE_PUBLISHABLE_KEY"]
 STRIPE_SECRET_KEY=os.environ["STRIPE_SECRET_KEY"]
 
+CURRENT_ADMIN_DOMAIN = os.environ["CURRENT_ADMIN_DOMAIN"]
+
+EMAIL_ADMIN = os.environ["EMAIL_ADMIN"]
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
