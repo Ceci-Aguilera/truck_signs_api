@@ -227,6 +227,7 @@ class PaymentView(GenericAPIView):
     def post(self, request, id, format=None):
 
         try:
+        # if True:
             order = Order.objects.get(id=id)
             try:
                 order_serializer = OrderSerializer(order, data=request.data['order'], partial=True)
@@ -291,6 +292,8 @@ class PaymentView(GenericAPIView):
 
             return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
+        # else:
+        #     pass
         except stripe.error.CardError as e:
             return Response({"Result":"Error with card during payment"}, status=status.HTTP_400_BAD_REQUEST)
 
