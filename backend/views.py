@@ -22,8 +22,8 @@ from .serializers import *
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
-admin_email = settings.EMAIL_ADMIN
-current_admin_domain = settings.CURRENT_ADMIN_DOMAIN
+# admin_email = settings.EMAIL_ADMIN
+# current_admin_domain = settings.CURRENT_ADMIN_DOMAIN
 
 # Create your views here.
 
