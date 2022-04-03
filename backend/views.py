@@ -22,8 +22,8 @@ from .serializers import *
 import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
-admin_email = settings.EMAIL_ADMIN
-current_admin_domain = settings.CURRENT_ADMIN_DOMAIN
+# admin_email = settings.EMAIL_ADMIN
+# current_admin_domain = settings.CURRENT_ADMIN_DOMAIN
 
 # Create your views here.
 
@@ -78,48 +78,6 @@ class ProductDetail(RetrieveAPIView):
     queryset = Product.objects.all()
 
 
-class ProductLetteringCreate(APIView):
-    authentication_classes = []
-    serializer_class = LetteringItemVariationSerializer
-
-    def post(self, request, format=None):
-        data = request.data
-        product = Product.objects.get(id = data['product_id'])
-        try:
-            product_variation = ProductVariation.objects.get(id = data['product_variation_id'])
-            if(product.id != product_variation.product.id):
-                product_variation = ProductVariation(product=product, product_color=product.product_color_default, amount=1)
-                product_variation.save()
-
-        except:
-            product_variation = ProductVariation(product=product, product_color=product.product_color_default, amount=1)
-            product_variation.save()
-
-        lettering_item_serializer = LetteringItemVariationSerializer(data=data['product_variation_lettering'])
-        lettering_item_serializer.is_valid(raise_exception=True)
-        lettering_item = lettering_item_serializer.save()
-        lettering_item_category = LetteringItemCategory.objects.get(id = data['lettering_item_category_id'])
-        lettering_item.lettering_item_category = lettering_item_category
-        lettering_item.product_variation = product_variation
-        lettering_item.save()
-
-        product_variation_serializer = ProductVariationSerializer(product_variation)
-
-        return Response({"Result": product_variation_serializer.data}, status=status.HTTP_200_OK)
-
-
-class LetteringVariationDestroyAPIView(DestroyAPIView):
-    serializer_class = LetteringItemVariationSerializer
-    queryset = LetteringItemVariation.objects.all()
-    lookup_field = 'id'
-
-    def delete(self, request, *args, **kwargs):
-        product_id = request.data.get('id')
-        response = super().delete(request, *args, **kwargs)
-        if response.status_code == 204:
-            from django.core.cache import cache
-            cache.delete(f'product_data_{product_id}')
-        return response
 
 
 class ProductVariationRetrieveView(RetrieveAPIView):
@@ -130,51 +88,6 @@ class ProductVariationRetrieveView(RetrieveAPIView):
     queryset = ProductVariation.objects.all()
 
 
-# Creates the Product Variation and the Lettering Item Variation, then
-# creates the Order
-class CreateProductVariationView(GenericAPIView):
-
-    authentication_classes = []
-    serializer_class = ProductVariationSerializer
-
-    def post(self, request, format=None):
-        data = request.data
-
-        try:
-            product_id = data['product_id']
-            product = Product.objects.get(id=product_id)
-            product_variation = ProductVariation(product=product)
-            product_variation.save()
-
-            try:
-                lettering_items = data['lettering_items']
-                for item in lettering_items:
-                    item_serializer = LetteringItemVariationSerializer(data=item)
-                    item_serializer.is_valid(raise_exception=True)
-                    item_category = LetteringItemCategory.objects.get(id=item_category_id)
-                    lettering_item = item_serializer.save(product_variation = product_variation, lettering_item_category=item_category)
-
-            except:
-                pass
-
-            try:
-                product_color_id = data['product_color_id']
-                product_color = ProductColor.objects.get(id=product_color_id)
-                product_variation.product_color = product_color
-
-            except:
-                pass
-            product_variation.save()
-            product_variation_serializer = self.get_serializer(product_variation)
-
-            order_serializer = OrderSerializer(data=data['order'])
-            order_serializer.is_valid(raise_exception=True)
-            order = order_serializer.save(product=product_variation)
-
-            return Response({"Result": order.id}, status=status.HTTP_200_OK)
-
-        except:
-            return Response({"Result": "Error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateOrder(GenericAPIView):
@@ -183,15 +96,26 @@ class CreateOrder(GenericAPIView):
 
     def post(self, request, id, format=None):
         data = request.data
-        product_variation = ProductVariation.objects.get(id = id)
+
+        product = Product.objects.get(id=id)
+
+        product_variation = ProductVariation(product=product)
+        product_variation.save()
+
+        lettering_items = data['lettering_items']
+        for custom_lettering_item in lettering_items:
+            if custom_lettering_item['text'] and custom_lettering_item['text'].strip():
+                item_category = LetteringItemCategory.objects.get(title=custom_lettering_item['title'])
+                item_category.save()
+                lettering_item = LetteringItemVariation(lettering_item_category=item_category, lettering=custom_lettering_item['text'], product_variation=product_variation)
+                lettering_item.save()
 
         try:
             product_color = ProductColor.objects.get(id=data['product_color_id'])
         except:
             product_color = None
-        amount = data['amount']
         product_variation.product_color = product_color
-        product_variation.amount = amount
+        product_variation.amount = 1
         product_variation.save()
 
         order_serializer = OrderSerializer(data=data['order'])

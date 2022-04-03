@@ -24,7 +24,7 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 
 
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '192.168.56.101' ,'truck-signs-api.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1',]
 
 
 # Application definition
@@ -134,8 +134,13 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIR = [os.path.join(ROOT_BASE_DIR,'staticfiles')]
-STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'staticfiles')
+# STATICFILES_DIRS = (os.path.join(ROOT_BASE_DIR, 'static'),)
+STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'static/')
+
+# STATICFILES_FINDERS = (
+# 'django.contrib.staticfiles.finders.FileSystemFinder',
+# 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')

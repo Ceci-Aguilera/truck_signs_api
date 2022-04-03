@@ -32,6 +32,15 @@ class LetteringItemVariationSerializer(serializers.ModelSerializer):
         fields = ('lettering_item_category', 'lettering', 'id')
 
 
+class LetteringItemVariationSimpleSerializer(serializers.ModelSerializer):
+
+    lettering_item_category = LetteringItemCategorySerializer(read_only=True)
+
+    class Meta:
+        model = LetteringItemVariation
+        fields = ('lettering_item_category', 'lettering', 'id')
+
+
 
 
 class ProductColorSerializer(serializers.ModelSerializer):

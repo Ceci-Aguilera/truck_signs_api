@@ -11,17 +11,12 @@ SECRET_KEY= env("SECRET_KEY")
 DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
+    "https://www.signsfortrucks.com",
+    "https://signsfortrucks.com",
     "http://localhost:3000",
-    "http://0.0.0.0:3000"
 ]
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUD_NAME'),
-    'API_KEY': env('CLOUD_API_KEY'),
-    'API_SECRET': env('CLOUD_API_SECRET'),
-}
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DATABASES = {
     'default': {
@@ -37,9 +32,7 @@ DATABASES = {
 STRIPE_PUBLISHABLE_KEY=env("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY=env("STRIPE_SECRET_KEY")
 
-CURRENT_ADMIN_DOMAIN = env("CURRENT_ADMIN_DOMAIN")
 
-EMAIL_ADMIN = env("EMAIL_ADMIN")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
