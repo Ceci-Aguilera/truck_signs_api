@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: "signs-for-trucks-django-backend-api"
+    command: ./entrypoint.sh
+    hostname: api
+    volumes:
+      - django_static_volume:/usr/src/app/static
+    ports:
+      - 8000
+    env_file:
+      - ./truck_signs_designs/settings/.env
+    links:
+      - db
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=docker_trucksigns_user
+      - POSTGRES_PASSWORD=docker_supertrucksignsuser!
+      - POSTGRES_DB=docker_trucksigns_db
+  nginx:
+    build: ./nginx
+    volumes:
+      - django_static_volume:/usr/src/app/static
+    ports:
+      - 80:80
+    links:
+      - api
+
+volumes:
+  postgres_data:
+  django_static_volume:
