@@ -57,7 +57,6 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     image = serializers.ImageField(use_url=True)
     detail_image = serializers.ImageField(use_url=True)
-    product_color_default = ProductColorSerializer(read_only=True)
 
     class Meta:
         model = Product

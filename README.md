@@ -7,9 +7,10 @@
 * [Installation for Testing using Docker](#docker)
 * [Custom Installation](#installation)
 * [Deploy on VPS](#deploy)
-* [Useful Links](#useful_links)
 * [Screenshots of the Frontend Next js App](#screenshots_frontend)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
+* [Useful Links](#useful_links)
+
 
 
 <a name="intro"></a>
@@ -214,34 +215,6 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 1. Configure the CORS to allow the Frontend to make api calls. See [Link](https://www.stackhawk.com/blog/django-cors-guide/)
 
 
-<a name="useful_links"></a>
-### Useful Links
-
-#### Postgresql Databse
-- Setup Database: [Digital Ocean Link for Django Deployment on VPS](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
-
-#### Docker
-- [Docker Oficial Documentation](https://docs.docker.com/)
-- Dockerizing Django, PostgreSQL, guinicorn, and Nginx:
-    - Github repo of sunilale0: [Link](https://github.com/sunilale0/django-postgresql-gunicorn-nginx-dockerized/blob/master/README.md#nginx)
-    - My repo to Dockerize Django + Postgresql + Nginx + React js: [Ceci-Aguilera/django-react-nginx-mysql-docker](https://github.com/Ceci-Aguilera/django-react-nginx-mysql-docker)
-    - Michael Herman article on testdriven.io: [Link](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
-
-#### Django and DRF
-- [Django Official Documentation](https://docs.djangoproject.com/en/4.0/)
-- Generate a new secret key: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
-- Modify the Django Admin:
-    - Small modifications (add searching, columns, ...): [Link](https://realpython.com/customize-django-admin-python/)
-    - Modify Templates and css: [Link from Medium](https://medium.com/@brianmayrose/django-step-9-180d04a4152c)
-- [Django Rest Framework Official Documentation](https://www.django-rest-framework.org/)
-- More about Nested Serializers: [Stackoverflow Link](https://stackoverflow.com/questions/51182823/django-rest-framework-nested-serializers)
-- More about GenericViews: [Testdriver.io Link](https://testdriven.io/blog/drf-views-part-2/)
-
-#### Miscellaneous
-- Create Virual Environment with Virtualenv and Virtualenvwrapper: [Link](https://docs.python-guide.org/dev/virtualenvs/)
-- [Configure CORS](https://www.stackhawk.com/blog/django-cors-guide/)
-- [Setup Django with Cloudinary](https://cloudinary.com/documentation/django_integration)
-- 
 
 
 
@@ -293,3 +266,32 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 
 ![alt text](./screenshots/Admin_Panel_View_3.png)
 
+
+
+<a name="useful_links"></a>
+### Useful Links
+
+#### Postgresql Databse
+- Setup Database: [Digital Ocean Link for Django Deployment on VPS](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
+
+#### Docker
+- [Docker Oficial Documentation](https://docs.docker.com/)
+- Dockerizing Django, PostgreSQL, guinicorn, and Nginx:
+    - Github repo of sunilale0: [Link](https://github.com/sunilale0/django-postgresql-gunicorn-nginx-dockerized/blob/master/README.md#nginx)
+    - My repo to Dockerize Django + Postgresql + Nginx + React js: [Ceci-Aguilera/django-react-nginx-mysql-docker](https://github.com/Ceci-Aguilera/django-react-nginx-mysql-docker)
+    - Michael Herman article on testdriven.io: [Link](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
+
+#### Django and DRF
+- [Django Official Documentation](https://docs.djangoproject.com/en/4.0/)
+- Generate a new secret key: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
+- Modify the Django Admin:
+    - Small modifications (add searching, columns, ...): [Link](https://realpython.com/customize-django-admin-python/)
+    - Modify Templates and css: [Link from Medium](https://medium.com/@brianmayrose/django-step-9-180d04a4152c)
+- [Django Rest Framework Official Documentation](https://www.django-rest-framework.org/)
+- More about Nested Serializers: [Stackoverflow Link](https://stackoverflow.com/questions/51182823/django-rest-framework-nested-serializers)
+- More about GenericViews: [Testdriver.io Link](https://testdriven.io/blog/drf-views-part-2/)
+
+#### Miscellaneous
+- Create Virual Environment with Virtualenv and Virtualenvwrapper: [Link](https://docs.python-guide.org/dev/virtualenvs/)
+- [Configure CORS](https://www.stackhawk.com/blog/django-cors-guide/)
+- [Setup Django with Cloudinary](https://cloudinary.com/documentation/django_integration)

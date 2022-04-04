@@ -49,8 +49,6 @@ class Product(models.Model):
     title = models.CharField(max_length=256)
     image = models.ImageField(upload_to='uploads/products/', blank=True)
     detail_image = models.ImageField(upload_to='uploads/products_detail', blank=True)
-    product_color_default = models.ForeignKey(ProductColor, on_delete=models.SET_NULL, null=True)
-    only_on_default_color = models.BooleanField(default=True)
     is_uploaded = models.BooleanField(default=False)
 
     def __str__(self):

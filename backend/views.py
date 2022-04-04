@@ -262,7 +262,7 @@ class UploadCustomerImage(GenericAPIView):
         data = request.data
         product_title = "Customer-Image-" + str(datetime.now())
         category = Category.objects.get(title="Truck Sign")
-        product = Product(category=category, title=product_title, is_uploaded=True, product_color_default=None)
+        product = Product(category=category, title=product_title, is_uploaded=True)
         product.save()
 
         product_serializer = ProductSerializer(product, data=data, partial=True)
