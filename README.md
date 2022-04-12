@@ -1,11 +1,20 @@
-# Trucks Signs Django Backend API ![alt text](./screenshots/Truck_Signs_logo.png)
+<div align="center">
+
+![Truck Signs](./screenshots/Truck_Signs_logo.png)
+
+# Signs for Trucks
+
+![Python version](https://img.shields.io/badge/Pythn-3.8.10-4c566a?logo=python&&longCache=true&logoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django version](https://img.shields.io/badge/Django-2.2.8-4c566a?logo=django&&longCache=truelogoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django-RestFramework](https://img.shields.io/badge/Django_Rest_Framework-3.12.4-red.svg?longCache=true&style=flat-square&logo=django&logoColor=white&colorA=4c566a&colorB=pink)  ![Stars](https://img.shields.io/github/forks/Ceci-Aguilera/truck_signs_frontend?&&longCache=true&logoColor=white&colorB=yellow&style=flat-square&colorA=4c566a)  ![Forks](https://img.shields.io/github/stars/Ceci-Aguilera/truck_signs_api?&&longCache=true&logoColor=white&colorB=yellow&style=flat-square&colorA=4c566a) ![Commit activity](https://img.shields.io/github/commit-activity/y/Ceci-Aguilera/truck_signs_api/master?&&longCache=true&logoColor=white&colorB=green&style=flat-square&colorA=4c566a)
+
+
+</div>
 
 ## Table of Contents
-* [Simple Introduction](#intro)
-* [Workflow from the client's view](#workflow)
+* [Description](#intro)
 * [Structure and Backend Functionalities](#structure)
-* [Installation for Testing using Docker](#docker)
-* [Custom Installation](#installation)
+* [Install (Run) with Docker](#docker)
+* [Installation without Docker](#installation)
+* [Connect to the Next js Frontend](#connect_backend)
 * [Deploy on VPS](#deploy)
 * [Screenshots of the Frontend Next js App](#screenshots_frontend)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
@@ -14,12 +23,10 @@
 
 
 <a name="intro"></a>
-### Simple Introduction
+## Description
 __Signs for Trucks__ is an online store to buy pre-designed vinyls with custom lines of letters (often call truck letterings). The store also allows clients to upload their own designs and to customize them on the website as well. Aside from the vinyls that are the main product of the store, clients can also purchase simple lettering vinyls with no truck logo, a fire extinguisher vinyl, and/or a vinyl with only the truck unit number (or another number selected by the client).
 
-<a name="workflow"></a>
-### Workflow from the client's view
-
+### Services Explained
 __NOTE:__ This is also the section _Basic Workflow of the Website_ of the frontend (NEXT js) documentation.
 
 1. __Selecting a pre-designed vinyl or uploading one:__ In the principal view of the website (NEXT js frontend) the client can select one of the pre-designed vinyls available to edit, or the client can upload a png, jpg, ... photo to use as the template for the vinyl. After this the client is redirected to the edit-vinyl section.
@@ -31,15 +38,15 @@ __NOTE:__ This is also the section _Basic Workflow of the Website_ of the fronte
 
 
 <a name="structure"></a>
-### Structure and Backend Functionalities
+## Structure and Backend Functionalities
 
 The backend functionalities can be divided into 2 categories, those that serve the frontend app (NEXT js), and those used for the administration of the store  because the creation of a custom administration panel (aside from the Django Admin) is currently under consideration. Almost all of the views of the app have been created using CBVs.
 
-#### Settings
+### Settings
 
 The __settings__ folder inside the trucks_signs_designs folder contains the different setting's configuration for each environment (so far the environments are development, docker testing, and production). Those files are extensions of the base.py file which contains the basic configuration shared among the different environments (for example, the value of the template directory location). In addition, the .env file inside this folder has the environment variables that are mostly sensitive information and should always be configured before use. By default, the environment in use is the decker testing. To change between environments modify the \_\_init.py\_\_ file.
 
-#### Models
+### Models
 
 Most of the models do what can be inferred from their name. The following dots are notes about some of the models to make clearer their propose:
 - __Category Model:__ The category of the vinyls in the store. It contains the title of the category as well as the basic properties shared among products that belong to a same category. For example, _Truck Logo_ is a category for all vinyls that has a logo of a truck plus some lines of letterings (note that the vinyls are instances of the model _Product_). Another category is _Fire Extinguisher_, that is for all vinyls that has a logo of a fire extinguisher. 
@@ -51,7 +58,7 @@ Most of the models do what can be inferred from their name. The following dots a
 
 To manage the payments, the payment gateway in use is [Stripe](https://stripe.com/).
 
-#### Brief Explanation of the Views
+### Brief Explanation of the Views
 
 Most of the views are CBV imported from _rest_framework.generics_, and they allow the backend api to do the basic CRUD operations expected, and so they inherit from the _ListAPIView_, _CreateAPIView_, _RetrieveAPIView_, ..., and so on.
 
@@ -60,15 +67,15 @@ The behavior of some of the views had to be modified to address functionalities 
 
 
 <a name="docker"></a>
-### Installation for Testing using Docker
+## Install (Run) with Docker
 
-#### About the Builds and Images in use:
+### About the Builds and Images in use:
 There are currently 3 services in use: the api (Django App), the db (the postgrSQL database), and the nginx (Nginx configuration).
     - __api:__ The Django Dockerfile is in the root directory, and it has an entrypoint file that connects the backend to the database and runs migrations as well as collects the statics.
     - __db:__ This is built from the postgres:13-alpine image. The default environment variables are set in the docker-compose.yml file.
     - __nginx:__ The default configuration for nginx is inside the nginx folder in the nginx.conf file.
 
-#### Runing Docker-Compose
+### Runing Docker-Compose
 
 1. Clone the repo:
     ```bash
@@ -78,7 +85,7 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
     1. Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
         ```bash
         cd truck_signs_designs/settings
-        cp simple_env_conf.env .env
+        cp simple_env_config.env .env
         ```
     1. The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for docker to run are the following:
         ```bash
@@ -123,7 +130,7 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 
 
 <a name="installation"></a>
-### Custom Installation
+## Installation without Docker
 
 1. Clone the repo:
     ```bash
@@ -134,7 +141,7 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
     1. Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
         ```bash
         cd truck_signs_designs/settings
-        cp simple_env_conf.env .env
+        cp simple_env_config.env .env
         ```
     1. The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the development environment to run are the following:
         ```bash
@@ -179,8 +186,72 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 
 
 
+
+
+<a name="connect_backend"></a>
+## Run with the Next js Frontend (with and without Docker)
+
+__Note:__ Before following these steps clone this repository. From now on the selected folder that contains the clone will be referred as __project_root__. So far, it should look like this:
+   ```sh
+      project_root
+      └── truck_signs_api
+   ```
+
+1. Assuming that your are at the __project_root__, clone the [Next js Frontend repository](https://github.com/Ceci-Aguilera/truck_signs_frontend):
+   ```sh
+      git clone https://github.com/Ceci-Aguilera/truck_signs_frontend.git
+   ```
+   Now the __project_root__ folder should look like:
+      ```sh
+      project_root
+      ├── truck_signs_api
+      └── truck_signs_frontend
+   ```
+
+- ### If Using Docker and Docker Compose
+   1. Copy the content of the docker-compose-connect.yml to a new file docker-compose.yml in the __project_root__. The docker-compose-connect.yml file can be found at the root of this repository and also at the root of the [Next js Frontend repository](https://github.com/Ceci-Aguilera/truck_signs_frontend) (Either file is fine to copy).
+   1. Follow the instruction to configure the environment variables of the __Next js__ frontend that can be found in the section __Install (Run) with Docker__ in the Readme.md of the [Next js Frontend repository](https://github.com/Ceci-Aguilera/truck_signs_frontend). The only env variable needed is the Flask Backend url, which by default should be [http://localhost:80](http://localhost:80).
+   1. Follow the instructions on the __Install (Run) with Docker__ section of this Readme.md to configure the environment variables for this repo.
+   __Note:__ Right now the __project_root__ should look like:
+         ```sh
+         project_root
+         ├── truck_signs_api
+         ├── truck_signs_frontend
+         └── docker-compose.yml
+      ```
+
+   1. Run the command:
+
+      ```bash
+      docker-compose up --build
+      ```
+
+   1. Congratulations =) !!! the frontend app should be running in [localhost:3000](http://localhost:3000) while the backend is at [localhost:80](http://localhost:80)
+
+   1. (Optional step) To create a super user run:
+   ```bash
+      docker-compose run api ./manage.py createsuperuser
+   ```
+
+__NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
+
+
+- ### Running without Docker and Docker Compose
+   1. Follow the instructions of the __Installation without Docker__ section in the Readme.md of the [Next js Frontend repository](https://github.com/Ceci-Aguilera/truck_signs_frontend) to configure and run the frontend. Modify the NEXT_PUBLIC_API_DOMAIN_NAME to be the url of the __Django__ Backend API (by default it is [http://localhost:8000](http://localhost:8000).
+   1. Follow the instructions of section __Installation without Docker__ of this Readme.md.
+   1. Congratulations =) !!! the frontend app should be running in [localhost:3000](http://localhost:3000) while the backend is at [localhost:8000](http://localhost:8000)
+
+__NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
+
+---
+
+
+
+
+
+
 <a name="deploy"></a>
-### Deploy on VPS
+## Deploy on VPS
 
 1. Clone the repo:
     ```bash
@@ -221,16 +292,24 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 
 <a name="screenshots_frontend"></a>
 
-### Screenshots of the Frontend NEXT JS App
+## Screenshots of the Frontend NEXT JS App
 
-#### Mobile View
+### Mobile View
+
+<div align="center">
 
 ![alt text](./screenshots/Landing_Website_Mobile.png) ![alt text](./screenshots/Logo_Grid_Mobile_1.png) ![alt text](./screenshots/Pricing_Grid_Mobile.png)
 
+</div>
+
+<div align="center">
+
 ![alt text](./screenshots/Logo_Detail_Mobile.png) ![alt text](./screenshots/Logo_Grid_Mobile_2.png) ![alt text](./screenshots/Logo_Detail_Form_Mobile.png)
 
+</div>
+
 ---
-#### Desktop View
+### Desktop View
 
 ![alt text](./screenshots/Logo_Grid.png)
 
@@ -246,15 +325,18 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 
 <a name="screenshots"></a>
 
-### Screenshots of the Django Backend Admin Panel
+## Screenshots of the Django Backend Admin Panel
 
-#### Mobile View
+### Mobile View
+
+<div align="center">
 
 ![alt text](./screenshots/Admin_Panel_View_Mobile.png)  ![alt text](./screenshots/Admin_Panel_View_Mobile_2.png) ![alt text](./screenshots/Admin_Panel_View_Mobile_3.png)
 
+</div>
 ---
 
-#### Desktop View
+### Desktop View
 
 ![alt text](./screenshots/Admin_Panel_View.png)
 
@@ -269,19 +351,19 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 
 
 <a name="useful_links"></a>
-### Useful Links
+## Useful Links
 
-#### Postgresql Databse
+### Postgresql Databse
 - Setup Database: [Digital Ocean Link for Django Deployment on VPS](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
 
-#### Docker
+### Docker
 - [Docker Oficial Documentation](https://docs.docker.com/)
 - Dockerizing Django, PostgreSQL, guinicorn, and Nginx:
     - Github repo of sunilale0: [Link](https://github.com/sunilale0/django-postgresql-gunicorn-nginx-dockerized/blob/master/README.md#nginx)
     - My repo to Dockerize Django + Postgresql + Nginx + React js: [Ceci-Aguilera/django-react-nginx-mysql-docker](https://github.com/Ceci-Aguilera/django-react-nginx-mysql-docker)
     - Michael Herman article on testdriven.io: [Link](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
 
-#### Django and DRF
+### Django and DRF
 - [Django Official Documentation](https://docs.djangoproject.com/en/4.0/)
 - Generate a new secret key: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
 - Modify the Django Admin:
@@ -291,7 +373,8 @@ There are currently 3 services in use: the api (Django App), the db (the postgrS
 - More about Nested Serializers: [Stackoverflow Link](https://stackoverflow.com/questions/51182823/django-rest-framework-nested-serializers)
 - More about GenericViews: [Testdriver.io Link](https://testdriven.io/blog/drf-views-part-2/)
 
-#### Miscellaneous
+### Miscellaneous
 - Create Virual Environment with Virtualenv and Virtualenvwrapper: [Link](https://docs.python-guide.org/dev/virtualenvs/)
 - [Configure CORS](https://www.stackhawk.com/blog/django-cors-guide/)
 - [Setup Django with Cloudinary](https://cloudinary.com/documentation/django_integration)
+
